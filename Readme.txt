@@ -10,16 +10,16 @@ Installation
 ------------
  1. Ensure you have the version of Moodle as stated above in 'Required version of Moodle'.  This is essential as the
     format relies on underlying core code that is out of my control.
- 3. Put Moodle in 'Maintenance Mode' (docs.moodle.org/en/admin/setting/maintenancemode) so that there are no 
+ 2. Put Moodle in 'Maintenance Mode' (docs.moodle.org/en/admin/setting/maintenancemode) so that there are no 
     users using it bar you as the administrator - if you have not already done so.
- 4. Copy 'columns' to '/course/format/' if you have not already done so.
- 5. If using a Unix based system, chmod 755 on config.php - I have not tested this but have been told that it
+ 3. Copy 'columns' to '/course/format/' if you have not already done so.
+ 4. If using a Unix based system, chmod 755 on config.php - I have not tested this but have been told that it
     needs to be done.
- 6. In 'cnconfig.php' change the value of $CNCFG->defaultcolumns' for setting the default layout, structure and columns respectively for
+ 5. In 'cnconfig.php' change the value of $CNCFG->defaultcolumns' for setting the default layout, structure and columns respectively for
     new / updating courses as desired by following the instructions contained within.
- 8. Login as an administrator and follow standard the 'plugin' update notification.  If needed, go to
+ 6. Login as an administrator and follow standard the 'plugin' update notification.  If needed, go to
     'Site administration' -> 'Notifications' if this does not happen.
-11.  Put Moodle out of Maintenance Mode.
+ 7.  Put Moodle out of Maintenance Mode.
 
 Upgrade Instructions
 --------------------
@@ -27,8 +27,8 @@ Upgrade Instructions
    format relies on underlying core code that is out of my control.
 3. Put Moodle in 'Maintenance Mode' so that there are no users using it bar you as the administrator.
 4. In '/course/format/' move old 'columns' directory to a backup folder outside of Moodle.
-6. Follow installation instructions above.
-7. Put Moodle out of Maintenance Mode.
+5. Follow installation instructions above.
+6. Put Moodle out of Maintenance Mode.
 
 Uninstallation
 --------------
