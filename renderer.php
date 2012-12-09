@@ -296,11 +296,12 @@ class format_columns_renderer extends format_section_renderer_base {
         echo $this->end_section_list();
 
         // Display section bottom navigation.
+        $courselink = html_writer::link(course_get_url($course), get_string('returntomaincoursepage'));
         $sectionbottomnav = '';
         $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
         $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
         $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-        $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection), array('class' => 'mdl-align'));
+        $sectionbottomnav .= html_writer::tag('div', $courselink, array('class' => 'mdl-align'));
         $sectionbottomnav .= html_writer::end_tag('div');
         echo $sectionbottomnav;
 
@@ -321,13 +322,13 @@ class format_columns_renderer extends format_section_renderer_base {
         global $PAGE;
         global $cnsetting;
 
-        if (empty($cnsetting) == true) {
-            $cnsetting = get_columns_setting($course->id);
-        }
-
         $this->mymobiletheme = ($PAGE->theme->name == 'mymobile');  // Not brilliant, but will work!
 
         $userisediting = $PAGE->user_is_editing();
+
+        $modinfo = get_fast_modinfo($course);
+        $courseformat = course_get_format($course);
+        $course = $courseformat->get_course();
 
         $context = context_course::instance($course->id);
         // Title with completion help icon.
@@ -357,33 +358,31 @@ class format_columns_renderer extends format_section_renderer_base {
             echo $this->section_footer();
         }
 
-            $section = 1;
+        $section = 1;
 
         $numsections = $course->numsections; // Because we want to manipulate this for column breakpoints.
 
         $columnbreakpoint = 0;
-        if ($numsections < $cnsetting->columns) {
-            $cnsetting->columns = $numsections;  // Help to ensure a reasonable display.
+        if ($numsections < $cnsetting['columns']) {
+            $cnsetting['columns'] = $numsections;  // Help to ensure a reasonable display.
         }
-        if (($cnsetting->columns > 1) && ($this->mymobiletheme == false)) {
-            if ($cnsetting->columns > 4) {
+        if (($cnsetting['columns'] > 1) && ($this->mymobiletheme == false)) {
+            if ($$cnsetting['columns'] > 4) {
                 // Default in config.php (and reset in database) or database has been changed incorrectly.
-                $cnsetting->columns = 4;
+                $cnsetting['columns'] = 4;
 
-                // Update DB.
-                global $DB;
-                $DB->update_record('format_columns_settings', $tcsetting);
+                // Update....
+                $courseformat->update_columns_columns_setting($cnsetting['columns']);
             }
             $this->cncolumnwidth = 100 / $cnsetting->columns;
             $this->cncolumnwidth -= 1; // Allow for the padding in %.
             $this->cncolumnpadding = 2; // px
         } elseif ($cnsetting->columns < 1) {
             // Default in config.php (and reset in database) or database has been changed incorrectly.
-            $cnsetting->columns = 1;
+            $cnsetting['columns'] = 1;
 
-            // Update DB.
-            global $DB;
-            $DB->update_record('format_columns_settings', $tcsetting);
+            // Update....
+            $courseformat->update_columns_columns_setting($cnsetting['columns']);
         }
         echo $this->end_section_list();
         echo $this->start_columns_section_list();
@@ -394,19 +393,8 @@ class format_columns_renderer extends format_section_renderer_base {
         $shownsectioncount = 0;
                 
         while ($loopsection <= $course->numsections) {
-            if (!empty($sections[$section])) {
-                $thissection = $sections[$section];
-            } else {
-                // This will create a course section if it doesn't exist..
-                $thissection = get_course_section($section, $course->id);
+            $thissection = $modinfo->get_section_info($section);
 
-                // The returned section is only a bare database object rather than
-                // a section_info object - we will need at least the uservisible
-                // field in it.
-                $thissection->uservisible = true;
-                $thissection->availableinfo = null;
-                $thissection->showavailability = 0;
-            }
             // Show the section if the user is permitted to access it, OR if it's not available
             // but showavailability is turned on
             $showsection = $thissection->uservisible ||
@@ -436,19 +424,19 @@ class format_columns_renderer extends format_section_renderer_base {
                 }
             }
 
-                $section++;
+            $section++;
 
             if (($canbreak == false) && ($showsection == true)) {
                 $canbreak = true;
-                $columnbreakpoint = ($shownsectioncount + ($numsections / $cnsetting->columns)) - 1;
+                $columnbreakpoint = ($shownsectioncount + ($numsections / $cnsetting['columns'])) - 1;
             }
 
-            if (($canbreak == true) && ($shownsectioncount >= $columnbreakpoint) && ($columncount < $cnsetting->columns)) {
+            if (($canbreak == true) && ($shownsectioncount >= $columnbreakpoint) && ($columncount < $cnsetting['columns'])) {
                 echo $this->end_section_list();
                 echo $this->start_columns_section_list();
                 $columncount++;
                 // Next breakpoint is...
-                $columnbreakpoint += $numsections / $cnsetting->columns;
+                $columnbreakpoint += $numsections / $cnsetting['columns'];
             }
             $loopsection++;
         }
@@ -494,37 +482,4 @@ class format_columns_renderer extends format_section_renderer_base {
             echo $this->end_section_list();
         }
     }
-
-    // Collapsed Topics non-overridden additions.
-    /**
-     * Displays the settings icon for the course if required.
-     * @param stdClass $course The course entry from DB
-     * @return string HTML to output.
-     */
-    public function settings($course) {
-        global $PAGE;
-
-        $o = '';
-
-        $coursecontext = context_course::instance($course->id);
-        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $coursecontext)) {
-            $o .= html_writer::start_tag('li', array('class' => 'cnsection main clearfix'));
-
-            $o .= html_writer::tag('div', $this->output->spacer(), array('class' => 'left side'));
-
-            $o .= html_writer::tag('div', $this->output->spacer(), array('class' => 'right side'));
-
-            $o .= html_writer::start_tag('div', array('class' => 'content'));
-            $o .= html_writer::start_tag('div', array('class' => 'sectionbody'));
-            $o .= html_writer::start_tag('div', array('class' => 'cnsettingscontainer'));
-            $o .= html_writer::tag('a', html_writer::tag('div', '', array('id' => 'cn-set-settings')), array('title' => get_string("settings"), 'href' => 'format/columns/forms/settings.php?id=' . $course->id . '&sesskey=' . sesskey()));
-            $o .= html_writer::tag('div',get_string('formatsettingsinformation','format_columns'));
-            $o .= html_writer::end_tag('div');
-            $o .= html_writer::end_tag('div');
-            $o .= html_writer::end_tag('div');
-            $o .= html_writer::end_tag('li');
-        }
-        return $o;
-    }
-
 }

@@ -31,6 +31,12 @@ unset($CNCFG);
 global $CNCFG;
 $CNCFG = new stdClass();
 
+// Course display default, can be either one of:
+// COURSE_DISPLAY_SINGLEPAGE or - All sections on one page.
+// COURSE_DISPLAY_MULTIPAGE     - One section per page.
+// as defined in moodlelib.php.
+$CNCFG->defaultcoursedisplay = COURSE_DISPLAY_SINGLEPAGE;
+
 // Default number of columns between 1 and 4.
 $CNCFG->defaultcolumns = 2;
 ?>

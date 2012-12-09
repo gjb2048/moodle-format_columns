@@ -46,8 +46,6 @@ $string['currentsection'] = 'This topic';
 $string['markedthissection'] = 'This topic is highlighted as the current topic';
 $string['markthissection'] = 'Highlight this topic as the current topic';
 
-$string['formatsettings'] = 'Format settings';
-$string['formatsettingsinformation'] = '<br />To change the settings of the course format, click on the icon to the right.';
 $string['setcolumns'] = 'Set columns';
 $string['one'] = 'One';
 $string['two'] = 'Two';
@@ -63,4 +61,9 @@ $string['maincoursepage'] = 'Main course page';
 $string['resetcolumns_help'] = 'Resets the columns to the default values in "/course/format/columns/cnconfig.php" so it will be the same as a course the first time it is in the Columns format.';
 $string['resetallcolumns_help'] = 'Resets the columns to the default values in "/course/format/columns/cnconfig.php" for all courses so it will be the same as a course the first time it is in the Columns format.';
 $string['setcolumns_help'] = 'How many columns to use.';
+
+// Moodle 2.4 Course format refactoring - MDL-35218
+$string['numbersections'] = 'Number of sections';
+$string['cnreset'] = 'Columns reset options';
+$string['cnreset_help'] = 'Reset to Columns defaults that are in the cnconfig.php file.';
 ?>
