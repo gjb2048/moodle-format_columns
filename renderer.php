@@ -104,7 +104,7 @@ class format_columns_renderer extends format_section_renderer_base {
 
         if ($section->section != 0) {
             // Only in the non-general sections.
-            if ($this->is_section_current($section, $course)) {
+            if (course_get_format($course)->is_section_current($section)) {
                 $o .= get_accesshide(get_string('currentsection', 'format_' . $course->format));
             }
         }
@@ -343,9 +343,6 @@ class format_columns_renderer extends format_section_renderer_base {
         $this->cncolumnwidth = 100; // Reset to default.
         echo $this->start_section_list();
 
-        // Collapsed Topics settings.
-        echo $this->settings($course);
-
         // General section if non-empty.
         $thissection = $sections[0];
         unset($sections[0]);
@@ -367,17 +364,17 @@ class format_columns_renderer extends format_section_renderer_base {
             $cnsetting['columns'] = $numsections;  // Help to ensure a reasonable display.
         }
         if (($cnsetting['columns'] > 1) && ($this->mymobiletheme == false)) {
-            if ($$cnsetting['columns'] > 4) {
+            if ($cnsetting['columns'] > 4) {
                 // Default in config.php (and reset in database) or database has been changed incorrectly.
                 $cnsetting['columns'] = 4;
 
                 // Update....
                 $courseformat->update_columns_columns_setting($cnsetting['columns']);
             }
-            $this->cncolumnwidth = 100 / $cnsetting->columns;
+            $this->cncolumnwidth = 100 / $cnsetting['columns'];
             $this->cncolumnwidth -= 1; // Allow for the padding in %.
             $this->cncolumnpadding = 2; // px
-        } elseif ($cnsetting->columns < 1) {
+        } elseif ($cnsetting['columns'] < 1) {
             // Default in config.php (and reset in database) or database has been changed incorrectly.
             $cnsetting['columns'] = 1;
 

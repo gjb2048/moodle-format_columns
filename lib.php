@@ -49,15 +49,16 @@ class format_columns extends format_base {
      * @return string The section name.
      */
     public function get_section_name($section) {
-    // We can't add a node without any text
-    if ((string)$section->name !== '') {
-        return format_string($section->name, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
-    } else if ($section->section == 0) {
-        return get_string('section0name', 'format_columns');
-    } else {
-        return get_string('topic').' '.$section->section;
+        $section = $this->get_section($section);
+        // We can't add a node without any text
+        if ((string)$section->name !== '') {
+            return format_string($section->name, true, array('context' => get_context_instance(CONTEXT_COURSE, $course->id)));
+        } else if ($section->section == 0) {
+            return get_string('section0name', 'format_columns');
+        } else {
+            return get_string('topic').' '.$section->section;
+        }
     }
-}
 
     /**
      * The URL to use for the specified course (with section)
@@ -168,7 +169,7 @@ class format_columns extends format_base {
      */
     public function course_format_options($foreditform = false) {
         static $courseformatoptions = false;
-        global $TCCFG;
+        global $CNCFG;
 
         if ($courseformatoptions === false) {
             $courseconfig = get_config('moodlecourse');
@@ -182,11 +183,11 @@ class format_columns extends format_base {
                     'type' => PARAM_INT,
                 ),
                 'coursedisplay' => array(
-                    'default' => $TCCFG->defaultcoursedisplay,
+                    'default' => $CNCFG->defaultcoursedisplay,
                     'type' => PARAM_INT,
                 ),
                 'columns' => array(
-                    'default' => $TCCFG->defaultlayoutcolumns,
+                    'default' => $CNCFG->defaultcolumns,
                     'type' => PARAM_INT,
                 )
             );

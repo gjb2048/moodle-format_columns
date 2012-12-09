@@ -33,7 +33,7 @@ $string['formatcolumns'] = 'Columns';
 $string['columnssidewidth'] = '28px';
 
 $string['sectionname'] = 'Topic';
-$string['pluginname'] = 'Columns';
+$string['pluginname'] = 'Columns format';
 $string['section0name'] = 'General';
 
 // MDL-26105
@@ -64,6 +64,6 @@ $string['setcolumns_help'] = 'How many columns to use.';
 
 // Moodle 2.4 Course format refactoring - MDL-35218
 $string['numbersections'] = 'Number of sections';
-$string['cnreset'] = 'Columns reset options';
-$string['cnreset_help'] = 'Reset to Columns defaults that are in the cnconfig.php file.';
+$string['cnreset'] = 'Columns format reset options';
+$string['cnreset_help'] = 'Reset to Columns format defaults that are in the cnconfig.php file.';
 ?>
