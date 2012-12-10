@@ -67,6 +67,7 @@ Version Information
   2.  Fixed use of wrong settings global in renderer.php.
   3.  Fixed typos.
   4.  Prefixed 'format' to the format's name in the language file.
+  5.  Tidied up settings form.
 
 References
 ----------
