@@ -38,10 +38,10 @@ function callback_columns_uses_sections() {
 }
 
 /**
- * Used to display the course structure for a course where format=Collapsed Topics
+ * Used to display the course structure for a course where format=Columns
  *
  * This is called automatically by {@link load_course()} if the current course
- * format = Collapsed Topics.
+ * format = Columns.
  *
  * @param navigation_node $navigation The course node.
  * @param array $path An array of keys to the course node.

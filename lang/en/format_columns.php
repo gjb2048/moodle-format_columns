@@ -33,7 +33,7 @@ $string['formatcolumns'] = 'Columns';
 $string['columnssidewidth'] = '28px';
 
 $string['sectionname'] = 'Topic';
-$string['pluginname'] = 'Columns';
+$string['pluginname'] = 'Columns format';
 $string['section0name'] = 'General';
 
 // MDL-26105

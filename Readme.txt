@@ -28,7 +28,8 @@ Upgrade Instructions
 3. Put Moodle in 'Maintenance Mode' so that there are no users using it bar you as the administrator.
 4. In '/course/format/' move old 'columns' directory to a backup folder outside of Moodle.
 5. Follow installation instructions above.
-6. Put Moodle out of Maintenance Mode.
+6. Perform a 'Purge all caches' under 'Home -> Site administration -> Development -> Purge all caches'.
+7. Put Moodle out of Maintenance Mode.
 
 Uninstallation
 --------------
@@ -44,10 +45,10 @@ Uninstallation
 
 Course Backup and Restore Instructions
 --------------------------------------
-1. Backup as you would any other course.  The layout configuration will be stored with the course settings.
+1. Backup as you would any other course.  The number of columns will be stored with the course settings.
 2. Restore as you would any other course.  If you are offered the option of 'Overwrite Course Configuration'
-   you must say 'Yes' to have thelayout configuration restored otherwise the restored course will retain the
-   layout it previously had or the default in the 'config.php' file as mentioned in the 'Installation'
+   you must say 'Yes' to have the number of columns restored otherwise the restored course will retain the
+   number of columns it previously had or the default in the 'cnconfig.php' file as mentioned in the 'Installation'
    instructions above depending on the situation.
 3. Note: I believe that if you restore a Columns's course on an installation that does not have the
          format then it will work and become the default course format.  However the column data will not be
@@ -61,10 +62,16 @@ Version Information
 23rd November 2012 - Version 2.3.1 - Stable
   1.  First stable version.
 
+10th December 2012 - Version 2.3.1.1 - Stable
+  1.  Fixed orphaned activities showing up when they were not orphaned.
+  2.  Fixed use of wrong settings global in renderer.php.
+  3.  Fixed typos.
+  4.  Prefixed 'format' to the format's name in the language file.
+
 References
 ----------
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 23rd November 2012.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 10th December 2012.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard
