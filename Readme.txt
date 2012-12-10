@@ -45,10 +45,10 @@ Uninstallation
 
 Course Backup and Restore Instructions
 --------------------------------------
-1. Backup as you would any other course.  The layout configuration will be stored with the course settings.
+1. Backup as you would any other course.  The number of columns will be stored with the course settings.
 2. Restore as you would any other course.  If you are offered the option of 'Overwrite Course Configuration'
-   you must say 'Yes' to have thelayout configuration restored otherwise the restored course will retain the
-   layout it previously had or the default in the 'cnconfig.php' file as mentioned in the 'Installation'
+   you must say 'Yes' to have the number of columns restored otherwise the restored course will retain the
+   number of columns it previously had or the default in the 'cnconfig.php' file as mentioned in the 'Installation'
    instructions above depending on the situation.
 3. Note: I believe that if you restore a Columns's course on an installation that does not have the
          format then it will work and become the default course format.  However the column data will not be

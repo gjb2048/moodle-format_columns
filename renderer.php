@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Columns Information
  *
@@ -139,16 +140,12 @@ class format_columns_renderer extends format_section_renderer_base {
         if (has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
                 $url->param('marker', 0);
-                $controls[] = html_writer::link($url,
-                                    html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marked'),
-                                        'class' => 'icon ', 'alt' => get_string('markedthistopic'))),
-                                    array('title' => get_string('markedthistopic'), 'class' => 'editing_highlight'));
+                $controls[] = html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marked'),
+                                    'class' => 'icon ', 'alt' => get_string('markedthistopic'))), array('title' => get_string('markedthistopic'), 'class' => 'editing_highlight'));
             } else {
                 $url->param('marker', $section->section);
-                $controls[] = html_writer::link($url,
-                                html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marker'),
-                                    'class' => 'icon', 'alt' => get_string('markthistopic'))),
-                                array('title' => get_string('markthistopic'), 'class' => 'editing_highlight'));
+                $controls[] = html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marker'),
+                                    'class' => 'icon', 'alt' => get_string('markthistopic'))), array('title' => get_string('markthistopic'), 'class' => 'editing_highlight'));
             }
         }
 
@@ -179,7 +176,7 @@ class format_columns_renderer extends format_section_renderer_base {
         $o = '';
         $section = 1;
         $sectionmenu = array();
-        $sectionmenu[0] = get_string('maincoursepage','format_columns');  // Section 0 is never jumped to and is therefore used to indicate the main page.  And temporary until MDL-34917 in core.
+        $sectionmenu[0] = get_string('maincoursepage', 'format_columns');  // Section 0 is never jumped to and is therefore used to indicate the main page.  And temporary until MDL-34917 in core.
         $context = context_course::instance($course->id);
         while ($section <= $course->numsections) {
             if (!empty($sections[$section])) {
@@ -203,7 +200,7 @@ class format_columns_renderer extends format_section_renderer_base {
             $section++;
         }
 
-        $select = new single_select(new moodle_url('/course/view.php', array('id'=>$course->id)), 'section', $sectionmenu);
+        $select = new single_select(new moodle_url('/course/view.php', array('id' => $course->id)), 'section', $sectionmenu);
         $select->class = 'jumpmenu';
         $select->formid = 'sectionmenu';
         $o .= $this->output->render($select);
@@ -365,7 +362,7 @@ class format_columns_renderer extends format_section_renderer_base {
         }
         if (($cnsetting['columns'] > 1) && ($this->mymobiletheme == false)) {
             if ($cnsetting['columns'] > 4) {
-                // Default in config.php (and reset in database) or database has been changed incorrectly.
+                // Default in cnconfig.php (and reset in database) or database has been changed incorrectly.
                 $cnsetting['columns'] = 4;
 
                 // Update....
@@ -375,7 +372,7 @@ class format_columns_renderer extends format_section_renderer_base {
             $this->cncolumnwidth -= 1; // Allow for the padding in %.
             $this->cncolumnpadding = 2; // px
         } elseif ($cnsetting['columns'] < 1) {
-            // Default in config.php (and reset in database) or database has been changed incorrectly.
+            // Default in cnconfig.php (and reset in database) or database has been changed incorrectly.
             $cnsetting['columns'] = 1;
 
             // Update....
@@ -384,12 +381,11 @@ class format_columns_renderer extends format_section_renderer_base {
         echo $this->end_section_list();
         echo $this->start_columns_section_list();
 
-        $loopsection = 1;
         $canbreak = false; // Once the first section is shown we can decide if we break on another column.
         $columncount = 1;
         $shownsectioncount = 0;
-                
-        while ($loopsection <= $course->numsections) {
+
+        while ($section <= $course->numsections) {
             $thissection = $modinfo->get_section_info($section);
 
             // Show the section if the user is permitted to access it, OR if it's not available
@@ -399,9 +395,9 @@ class format_columns_renderer extends format_section_renderer_base {
             if (!$showsection) {
                 // Hidden section message is overridden by 'unavailable' control
                 // (showavailability option).
-                        if (!$course->hiddensections && $thissection->available) {
-                            echo $this->section_hidden($section);
-                        }
+                if (!$course->hiddensections && $thissection->available) {
+                    echo $this->section_hidden($section);
+                }
             } else {
                 $shownsectioncount++;
                 if (!$PAGE->user_is_editing() && $course->coursedisplay == COURSE_DISPLAY_MULTIPAGE) {
@@ -421,7 +417,6 @@ class format_columns_renderer extends format_section_renderer_base {
                 }
             }
 
-            $section++;
 
             if (($canbreak == false) && ($showsection == true)) {
                 $canbreak = true;
@@ -435,7 +430,8 @@ class format_columns_renderer extends format_section_renderer_base {
                 // Next breakpoint is...
                 $columnbreakpoint += $numsections / $cnsetting['columns'];
             }
-            $loopsection++;
+            unset($sections[$section]);
+            $section++;
         }
 
         if ($PAGE->user_is_editing() and has_capability('moodle/course:update', $context)) {
@@ -479,4 +475,5 @@ class format_columns_renderer extends format_section_renderer_base {
             echo $this->end_section_list();
         }
     }
+
 }
