@@ -409,10 +409,10 @@ class format_columns extends format_base {
 }
 
 /**
- * Used to display the course structure for a course where format=Collapsed Topics
+ * Used to display the course structure for a course where format=Columns
  *
  * This is called automatically by {@link load_course()} if the current course
- * format = Collapsed Topics.
+ * format = Columns.
  *
  * @param navigation_node $navigation The course node.
  * @param array $path An array of keys to the course node.
@@ -429,60 +429,4 @@ function callback_columns_load_content(&$navigation, $course, $coursenode) {
  */
 function callback_columns_definition() {
     return get_string('sectionname', 'format_columns');
-}
-
-/**
- * Gets the format setting for the course or if it does not exist, create it.
- * CONTRIB-3378.
- * @param int $courseid The course identifier.
- * @return int The format setting.
- */
-function get_columns_setting($courseid) {
-    global $DB;
-    global $CNCFG;
-
-    if (!$setting = $DB->get_record('format_columns_settings', array('courseid' => $courseid))) {
-        // Default values...
-        $setting = new stdClass();
-        $setting->courseid = $courseid;
-        $setting->columns = $CNCFG->defaultcolumns;
-
-        if (!$setting->id = $DB->insert_record('format_columns_settings', $setting)) {
-            error('Could not set format setting. Columns format database is not ready.  An admin must visit notifications.');
-        }
-    }
-
-    return $setting;
-}
-
-/**
- * Sets the format setting for the course or if it does not exist, create it.
- * @param int $courseid The course identifier.
- * @param int $columns The layout columns value to set.
- */
-function put_columns_setting($courseid, $columns) {
-    global $DB;
-    if ($setting = $DB->get_record('format_columns_settings', array('courseid' => $courseid))) {
-        $setting->columns = $columns;
-        $DB->update_record('format_columns_settings', $setting);
-    } else {
-        $setting = new stdClass();
-        $setting->courseid = $courseid;
-        $setting->columns = $columns;
-        $DB->insert_record('format_columns_settings', $setting);
-    }
-}
-
-/**
- * Rests the format setting to the default for all courses that use Columns.
- */
-function reset_columns_setting() {
-    global $DB;
-    global $CNCFG;
-
-    $records = $DB->get_records('format_columns_settings');
-    foreach ($records as $record) {
-        $record->columns = $CNCFG->defaultcolumns;
-        $DB->update_record('format_columns_settings', $record);
-    }
 }

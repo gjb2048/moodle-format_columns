@@ -62,13 +62,13 @@ Version Information
 23rd November 2012 - Version 2.3.1 - Stable
   1.  First stable version.
 
-9th December 2012 - Version 2.4.0.1 - Beta
+10th December 2012 - Version 2.4.0.1 - Beta
   1.  First Moodle 2.4 version.
   
 References
 ----------
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 9th December 2012.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 10th December 2012.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard
