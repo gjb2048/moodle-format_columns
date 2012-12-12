@@ -30,6 +30,9 @@
 
 require_once($CFG->dirroot . '/course/format/lib.php');
 require_once($CFG->dirroot . '/course/format/columns/lib.php');
+require_once($CFG->dirroot . '/backup/util/interfaces/checksumable.class.php');
+require_once($CFG->dirroot . '/backup/util/interfaces/loggable.class.php');
+require_once($CFG->dirroot . '/backup/backup.class.php');
 require_once($CFG->dirroot . '/backup/controller/restore_controller.class.php');
 require_once($CFG->dirroot . '/backup/util/checks/restore_check.class.php');
 
