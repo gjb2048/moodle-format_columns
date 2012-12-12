@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Columns Information
  *
@@ -26,6 +27,12 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+require_once($CFG->dirroot . '/course/format/lib.php');
+require_once($CFG->dirroot . '/course/format/columns/lib.php');
+require_once($CFG->dirroot . '/backup/controller/restore_controller.class.php');
+require_once($CFG->dirroot . '/backup/util/checks/restore_check.class.php');
+
 function xmldb_format_columns_upgrade($oldversion = 0) {
     global $DB;
     $dbman = $DB->get_manager();
@@ -40,14 +47,26 @@ function xmldb_format_columns_upgrade($oldversion = 0) {
             // Extract data out of table and put in course settings table for 2.4.
             $records = $DB->get_records('format_columns_settings');
             foreach ($records as $record) {
-                $courseformat = course_get_format($record->courseid);  // In '/course/format/lib.php'.
-                // Only update if the current format is 'columns' as we must have an instance of 'format_columns' (in 'lib.php')
-                // returned by the above.  Thanks to Marina Glancy for this :).
-                // If there are entries that existed for courses that were originally columns, then they will be lost.  However
-                // the code copes with this through the employment of defaults and I dont think the underlying code desires entries
-                // in the course_format_settings table for courses of a format that belong to another format.
-                if ($courseformat->get_format() == 'columns') {
-                    $courseformat->restore_columns_setting($record->courseid, $record->columns); // In '/course/format/columns/lib.php'.
+                try {
+                    // Check that the course still exists - CONTRIB-4065...
+                    // 1. In old version:
+                    // 1.1 Course created / changed to Collapsed Topics.
+                    // 1.2 Course changed to another format leaving an entry in the 'format_topcoll_settings' table which was not deleted as this cannot be detected.
+                    // 1.3 Course deleted and hence entry removing code withing Collapsed Topics not executed.
+                    // 2. Upgrade to new version and process an entry in 'format_topcoll_settings' for a course that no longer exists and fail.
+                    restore_check::check_courseid($record->courseid);
+
+                    $courseformat = course_get_format($record->courseid);  // In '/course/format/lib.php'.
+                    // Only update if the current format is 'columns' as we must have an instance of 'format_columns' (in 'lib.php')
+                    // returned by the above.  Thanks to Marina Glancy for this :).
+                    // If there are entries that existed for courses that were originally columns, then they will be lost.  However
+                    // the code copes with this through the employment of defaults and I dont think the underlying code desires entries
+                    // in the course_format_settings table for courses of a format that belong to another format.
+                    if ($courseformat->get_format() == 'columns') {
+                        $courseformat->restore_columns_setting($record->courseid, $record->columns); // In '/course/format/columns/lib.php'.
+                    }
+                } catch (restore_controller_exception $e) {
+                    // Nothing to do, skip this record...
                 }
             }
             // Farewell old settings table.
