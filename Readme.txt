@@ -56,22 +56,26 @@ Course Backup and Restore Instructions
 
 Version Information
 -------------------
-12th November 2012 - Version 2.3.0.1 - Alpha
+12th November 2012 - Version 2.3.0.1 - Alpha - Do not install on production sites.
   1.  First version.
 
 23rd November 2012 - Version 2.3.1 - Stable
   1.  First stable version.
 
-10th December 2012 - Version 2.4.0.1 - Beta
+10th December 2012 - Version 2.4.0.1 - Beta - Do not install on production sites.
   1.  First Moodle 2.4 version.
 
-12th December 2012 - Version 2.4.0.2 - Beta
+12th December 2012 - Version 2.4.0.2 - Beta - Do not install on production sites.
   1.  Fix for related CONTRIB-4065.
-  
+
+19th December 2012 - Version 2.4.0.3 - Beta - Do not install on production sites.
+  1.  Updated 'section_nav_selection()' in 'renderer.php' in line with course format refactoring by Marina Glancy.
+  2.  Minor refactor to remove redundant parameter on 'section_nav_selection()'.
+
 References
 ----------
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 12th December 2012.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 19th December 2012.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard

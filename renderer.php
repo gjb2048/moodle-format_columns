@@ -167,35 +167,22 @@ class format_columns_renderer extends format_section_renderer_base {
      * Generate the html for the 'Jump to' menu on a single section page.
      * Temporary until MDL-34917 in core.
      * @param stdClass $course The course entry from DB
-     * @param array $sections The course_sections entries from the DB
      * @param $displaysection the current displayed section number.
      *
      * @return string HTML to output.
      */
-    protected function section_nav_selection($course, $sections, $displaysection) {
+    protected function section_nav_selection($course, $displaysection) {
         $o = '';
         $section = 1;
         $sectionmenu = array();
         $sectionmenu[0] = get_string('maincoursepage', 'format_columns');  // Section 0 is never jumped to and is therefore used to indicate the main page.  And temporary until MDL-34917 in core.
         $context = context_course::instance($course->id);
+        $modinfo = get_fast_modinfo($course);
         while ($section <= $course->numsections) {
-            if (!empty($sections[$section])) {
-                $thissection = $sections[$section];
-            } else {
-                // This will create a course section if it doesn't exist..
-                $thissection = get_course_section($section, $course->id);
-
-                // The returned section is only a bare database object rather than
-                // a section_info object - we will need at least the uservisible
-                // field in it.
-                $thissection->uservisible = true;
-                $thissection->availableinfo = null;
-                $thissection->showavailability = 0;
-            }
+            $thissection = $modinfo->get_section_info($section);
             $showsection = (has_capability('moodle/course:viewhiddensections', $context) or $thissection->visible or !$course->hiddensections);
-
             if (($showsection) && ($section != $displaysection)) {
-                $sectionmenu[$section] = get_section_name($course, $thissection);
+                $sectionmenu[$section] = get_section_name($course, $section);
             }
             $section++;
         }
@@ -206,7 +193,7 @@ class format_columns_renderer extends format_section_renderer_base {
         $o .= $this->output->render($select);
 
         return $o;
-    }
+    }    
 
     /**
      * Output the html for a single section page.
@@ -297,7 +284,7 @@ class format_columns_renderer extends format_section_renderer_base {
         $sectionbottomnav .= html_writer::start_tag('div', array('class' => 'section-navigation mdl-bottom'));
         $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
         $sectionbottomnav .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
-        $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $sections, $displaysection), array('class' => 'mdl-align'));
+        $sectionbottomnav .= html_writer::tag('div', $this->section_nav_selection($course, $displaysection), array('class' => 'mdl-align'));
         $sectionbottomnav .= html_writer::end_tag('div');
         echo $sectionbottomnav;
 
