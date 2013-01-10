@@ -113,13 +113,12 @@ function callback_columns_ajax_section_move($course) {
  */
 function get_columns_setting($courseid) {
     global $DB;
-    global $CNCFG;
 
     if (!$setting = $DB->get_record('format_columns_settings', array('courseid' => $courseid))) {
         // Default values...
         $setting = new stdClass();
         $setting->courseid = $courseid;
-        $setting->columns = $CNCFG->defaultcolumns;
+        $setting->columns = ColumnsDefaults::defaultcolumns;
 
         if (!$setting->id = $DB->insert_record('format_columns_settings', $setting)) {
             error('Could not set format setting. Columns format database is not ready.  An admin must visit notifications.');
@@ -152,11 +151,10 @@ function put_columns_setting($courseid, $columns) {
  */
 function reset_columns_setting() {
     global $DB;
-    global $CNCFG;
 
     $records = $DB->get_records('format_columns_settings');
     foreach ($records as $record) {
-        $record->columns = $CNCFG->defaultcolumns;
+        $record->columns = ColumnsDefaults::defaultcolumns;
         $DB->update_record('format_columns_settings', $record);
     }
 }

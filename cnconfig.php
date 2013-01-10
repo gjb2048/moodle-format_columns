@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Columns Information
  *
@@ -26,11 +27,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+class ColumnsDefaults {
+    // Default number of columns between 1 and 4.
+    const defaultcolumns = 2;
+}
 
-unset($CNCFG);
-global $CNCFG;
-$CNCFG = new stdClass();
-
-// Default number of columns between 1 and 4.
-$CNCFG->defaultcolumns = 2;
 ?>
