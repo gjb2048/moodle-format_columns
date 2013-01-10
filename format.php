@@ -52,11 +52,6 @@ if ($week = optional_param('week', 0, PARAM_INT)) { // Weeks old section paramet
 }
 // End backwards-compatible aliasing..
 
-    global $cnsetting;
-    if (empty($cnsetting) == true) {
-        $cnsetting = course_get_format($course)->get_format_options();
-    }
-
     ?>
     <style type="text/css" media="screen">
         /* <![CDATA[ */

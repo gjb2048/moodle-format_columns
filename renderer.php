@@ -303,7 +303,8 @@ class format_columns_renderer extends format_section_renderer_base {
      */
     public function print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused) {
         global $PAGE;
-        global $cnsetting;
+
+        $cnsetting = course_get_format($course)->get_format_options();
 
         $this->mymobiletheme = ($PAGE->theme->name == 'mymobile');  // Not brilliant, but will work!
 

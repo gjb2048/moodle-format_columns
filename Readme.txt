@@ -14,13 +14,11 @@ Installation
  3. Put Moodle in 'Maintenance Mode' (docs.moodle.org/en/admin/setting/maintenancemode) so that there are no 
     users using it bar you as the administrator - if you have not already done so.
  4. Copy 'columns' to '/course/format/' if you have not already done so.
- 5. If using a Unix based system, chmod 755 on config.php - I have not tested this but have been told that it
-    needs to be done.
- 6. In 'cnconfig.php' change the value of $CNCFG->defaultcolumns' for setting the default layout, structure and columns respectively for
+ 5. In 'cnconfig.php' change the value of defaultcolumns' for setting the default layout, structure and columns respectively for
     new / updating courses as desired by following the instructions contained within.
- 7. Login as an administrator and follow standard the 'plugin' update notification.  If needed, go to
+ 6. Login as an administrator and follow standard the 'plugin' update notification.  If needed, go to
     'Site administration' -> 'Notifications' if this does not happen.
- 8.  Put Moodle out of Maintenance Mode.
+ 7. Put Moodle out of Maintenance Mode.
 
 Upgrade Instructions
 --------------------
@@ -72,10 +70,14 @@ Version Information
   1.  Updated 'section_nav_selection()' in 'renderer.php' in line with course format refactoring by Marina Glancy.
   2.  Minor refactor to remove redundant parameter on 'section_nav_selection()'.
 
+10th January 2013 - Version 2.4.0.4 - Beta - Do not install on production sites.
+  1.  Tidied up code to avoid use of globals.
+  2.  Removed installation instruction about file permissions on config.php which is not required.
+
 References
 ----------
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 19th December 2012.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 10th January 2013.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard

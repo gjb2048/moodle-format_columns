@@ -169,7 +169,6 @@ class format_columns extends format_base {
      */
     public function course_format_options($foreditform = false) {
         static $courseformatoptions = false;
-        global $CNCFG;
 
         if ($courseformatoptions === false) {
             $courseconfig = get_config('moodlecourse');
@@ -183,17 +182,16 @@ class format_columns extends format_base {
                     'type' => PARAM_INT,
                 ),
                 'coursedisplay' => array(
-                    'default' => $CNCFG->defaultcoursedisplay,
+                    'default' => ColumnsDefaults::defaultcoursedisplay,
                     'type' => PARAM_INT,
                 ),
                 'columns' => array(
-                    'default' => $CNCFG->defaultcolumns,
+                    'default' => ColumnsDefaults::defaultcolumns,
                     'type' => PARAM_INT,
                 )
             );
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
-            global $USER;
             $courseconfig = get_config('moodlecourse');
             $sectionmenu = array();
             for ($i = 0; $i <= $courseconfig->maxsections; $i++) {
@@ -354,7 +352,6 @@ class format_columns extends format_base {
      */
     public function reset_columns_setting($courseid) {
         global $DB;
-        global $CNCFG;
 
         $currentcourseid = 0;
         if ($courseid == 0) {
@@ -367,8 +364,8 @@ class format_columns extends format_base {
             if ($currentcourseid != $record->courseid) {
                 $currentcourseid = $record->courseid; // Only do once per course.
                 $layoutdata = array(
-                    'coursedisplay' => $CNCFG->defaultcoursedisplay,
-                    'columns' => $CNCFG->defaultcolumns);
+                    'coursedisplay' => ColumnsDefaults::defaultcoursedisplay,
+                    'columns' => ColumnsDefaults::defaultcolumns);
                 $ourcourseid = $this->courseid;
                 $this->courseid = $currentcourseid;
                 $this->update_format_options($layoutdata);
