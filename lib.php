@@ -32,21 +32,6 @@ require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
 
 class format_columns extends format_base {
 
-<<<<<<< HEAD
-/**
- * Used to display the course structure for a course where format=Columns
- *
- * This is called automatically by {@link load_course()} if the current course
- * format = Columns.
- *
- * @param navigation_node $navigation The course node.
- * @param array $path An array of keys to the course node.
- * @param stdClass $course The course we are loading the section for.
- */
-function callback_columns_load_content(&$navigation, $course, $coursenode) {
-    return $navigation->load_generic_course_sections($course, $coursenode, 'columns');
-}
-=======
     /**
      * Indicates this format uses sections.
      *
@@ -55,7 +40,6 @@ function callback_columns_load_content(&$navigation, $course, $coursenode) {
     public function uses_sections() {
         return true;
     }
->>>>>>> 826bbdc92c84edc4116e9cc6593fd48ad6083185
 
     /**
      * Gets the name for the provided section.
@@ -159,25 +143,6 @@ function callback_columns_load_content(&$navigation, $course, $coursenode) {
         return array('sectiontitles' => $titles, 'action' => 'move');
     }
 
-<<<<<<< HEAD
-/**
- * Gets the format setting for the course or if it does not exist, create it.
- * CONTRIB-3378.
- * @param int $courseid The course identifier.
- * @return int The format setting.
- */
-function get_columns_setting($courseid) {
-    global $DB;
-
-    if (!$setting = $DB->get_record('format_columns_settings', array('courseid' => $courseid))) {
-        // Default values...
-        $setting = new stdClass();
-        $setting->courseid = $courseid;
-        $setting->columns = ColumnsDefaults::defaultcolumns;
-
-        if (!$setting->id = $DB->insert_record('format_columns_settings', $setting)) {
-            error('Could not set format setting. Columns format database is not ready.  An admin must visit notifications.');
-=======
     /**
      * Returns the list of blocks to be automatically added for the newly created course
      *
@@ -225,7 +190,6 @@ function get_columns_setting($courseid) {
                     'type' => PARAM_INT,
                 )
             );
->>>>>>> 826bbdc92c84edc4116e9cc6593fd48ad6083185
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
             $courseconfig = get_config('moodlecourse');
@@ -451,19 +415,8 @@ function get_columns_setting($courseid) {
  * @param array $path An array of keys to the course node.
  * @param stdClass $course The course we are loading the section for.
  */
-<<<<<<< HEAD
-function reset_columns_setting() {
-    global $DB;
-
-    $records = $DB->get_records('format_columns_settings');
-    foreach ($records as $record) {
-        $record->columns = ColumnsDefaults::defaultcolumns;
-        $DB->update_record('format_columns_settings', $record);
-    }
-=======
 function callback_columns_load_content(&$navigation, $course, $coursenode) {
     return $navigation->load_generic_course_sections($course, $coursenode, 'columns');
->>>>>>> 826bbdc92c84edc4116e9cc6593fd48ad6083185
 }
 
 /**

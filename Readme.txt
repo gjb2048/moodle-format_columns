@@ -16,7 +16,7 @@ Installation
  4. Copy 'columns' to '/course/format/' if you have not already done so.
  5. In 'cnconfig.php' change the value of defaultcolumns' for setting the default layout, structure and columns respectively for
     new / updating courses as desired by following the instructions contained within.
- 5. Login as an administrator and follow standard the 'plugin' update notification.  If needed, go to
+ 6. Login as an administrator and follow standard the 'plugin' update notification.  If needed, go to
     'Site administration' -> 'Notifications' if this does not happen.
  7. Put Moodle out of Maintenance Mode.
 
