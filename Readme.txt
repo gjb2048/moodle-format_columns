@@ -4,20 +4,21 @@ Topic based course format with the ability to arrange the topics in columns exce
 
 Required version of Moodle
 --------------------------
-This version works with Moodle 2.3.2+, version 2012062502.05 (Build: 20121005) and above until the next release.
+This version works with Moodle 2.4 version 2012120300.00 (Build: 20121203) and above until the next release.
 
 Installation
 ------------
  1. Ensure you have the version of Moodle as stated above in 'Required version of Moodle'.  This is essential as the
     format relies on underlying core code that is out of my control.
- 2. Put Moodle in 'Maintenance Mode' (docs.moodle.org/en/admin/setting/maintenancemode) so that there are no 
+ 2. If upgrading from Moodle 2.3 or a previous release, please see 'Upgrade Instructions' below.
+ 3. Put Moodle in 'Maintenance Mode' (docs.moodle.org/en/admin/setting/maintenancemode) so that there are no 
     users using it bar you as the administrator - if you have not already done so.
- 3. Copy 'columns' to '/course/format/' if you have not already done so.
- 4. In 'cnconfig.php' change the value of 'defaultcolumns' for setting the default layout, structure and columns respectively for
+ 4. Copy 'columns' to '/course/format/' if you have not already done so.
+ 5. In 'cnconfig.php' change the value of defaultcolumns' for setting the default layout, structure and columns respectively for
     new / updating courses as desired by following the instructions contained within.
  5. Login as an administrator and follow standard the 'plugin' update notification.  If needed, go to
     'Site administration' -> 'Notifications' if this does not happen.
- 6. Put Moodle out of Maintenance Mode.
+ 7. Put Moodle out of Maintenance Mode.
 
 Upgrade Instructions
 --------------------
@@ -36,9 +37,8 @@ Uninstallation
    not done Moodle will pick the last format in your list of formats to use but display in 'Edit settings' of the
    course the first format in the list.  You can then set the desired format.
 3. In '/course/format/' remove the folder 'columns'.
-4. In the database, remove the table 'format_columns_settings' along with the entry for 'format_columns'
-   ('plugin' attribute) in the table 'config_plugins'.  If using the default prefix this will be
-   'mdl_format_columns_settings' and 'mdl_config_plugins' respectively.
+4. In the database, remove the entry for 'format_columns' ('plugin' attribute) in the table 'config_plugins'.  
+   If using the default prefix this will be 'mdl_config_plugins'.
 5. Put Moodle out of Maintenance Mode.
 
 Course Backup and Restore Instructions
@@ -54,20 +54,23 @@ Course Backup and Restore Instructions
 
 Version Information
 -------------------
-12th November 2012 - Version 2.3.0.1 - Alpha
+12th November 2012 - Version 2.3.0.1 - Alpha - Do not install on production sites.
   1.  First version.
 
 23rd November 2012 - Version 2.3.1 - Stable
   1.  First stable version.
 
-10th December 2012 - Version 2.3.1.1 - Stable
-  1.  Fixed orphaned activities showing up when they were not orphaned.
-  2.  Fixed use of wrong settings global in renderer.php.
-  3.  Fixed typos.
-  4.  Prefixed 'format' to the format's name in the language file.
-  5.  Tidied up settings form.
+10th December 2012 - Version 2.4.0.1 - Beta - Do not install on production sites.
+  1.  First Moodle 2.4 version.
 
-10th January 2013 - Version 2.3.1.2 - Stable
+12th December 2012 - Version 2.4.0.2 - Beta - Do not install on production sites.
+  1.  Fix for related CONTRIB-4065.
+
+19th December 2012 - Version 2.4.0.3 - Beta - Do not install on production sites.
+  1.  Updated 'section_nav_selection()' in 'renderer.php' in line with course format refactoring by Marina Glancy.
+  2.  Minor refactor to remove redundant parameter on 'section_nav_selection()'.
+
+10th January 2013 - Version 2.4.0.4 - Beta - Do not install on production sites.
   1.  Tidied up code to avoid use of globals.
   2.  Removed installation instruction about file permissions on config.php which is not required.
 

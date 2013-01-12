@@ -68,9 +68,14 @@ class restore_format_columns_plugin extends restore_format_plugin {
 
         $data->courseid = $this->task->get_courseid();
 
+        if (!($course = $DB->get_record('course', array('id' => $data->courseid)))) {
+            print_error('invalidcourseid', 'error');
+        } // From /course/view.php
+        $courseformat = course_get_format($course);
+
         if (isset($data->columns)) {
             // In $CFG->dirroot.'/course/format/columns/lib.php'...
-            put_columns_setting($data->courseid, $data->columns);
+            $courseformat->restore_columns_setting($data->courseid, $data->columns);
         }
 
         // No need to annotate anything here

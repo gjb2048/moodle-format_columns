@@ -28,6 +28,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 class ColumnsDefaults {
+    // Course display default, can be either one of:
+    // COURSE_DISPLAY_SINGLEPAGE or - All sections on one page.
+    // COURSE_DISPLAY_MULTIPAGE     - One section per page.
+    // as defined in moodlelib.php.
+    const defaultcoursedisplay = COURSE_DISPLAY_SINGLEPAGE;
+
     // Default number of columns between 1 and 4.
     const defaultcolumns = 2;
 }
