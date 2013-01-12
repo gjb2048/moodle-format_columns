@@ -1,1 +1,1 @@
-This is the Columns for Moodle 2.4 branch.
+This is the Columns for Moodle master branch.
