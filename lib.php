@@ -32,6 +32,19 @@ require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
 
 class format_columns extends format_base {
 
+    private $settings;
+
+    /**
+     * Returns the format's settings and gets them if they do not exist.
+     * @return type The settings as an array.
+     */
+    public function get_settings() {
+        if (empty($this->settings) == true) {
+            $this->settings = $this->get_format_options();
+        }
+        return $this->settings;
+    }
+
     /**
      * Indicates this format uses sections.
      *
@@ -188,6 +201,10 @@ class format_columns extends format_base {
                 'columns' => array(
                     'default' => ColumnsDefaults::defaultcolumns,
                     'type' => PARAM_INT,
+                ),
+                'layoutcolumnorientation' => array(
+                    'default' => ColumnsDefaults::defaultlayoutcolumnorientation,
+                    'type' => PARAM_INT,
                 )
             );
         }
@@ -238,7 +255,17 @@ class format_columns extends format_base {
                             3 => get_string('three', 'format_columns'), // Three
                             4 => get_string('four', 'format_columns')) // Four
                     )
-                )
+                ),
+                'layoutcolumnorientation' => array(
+                    'label' => new lang_string('setlayoutcolumnorientation', 'format_topcoll'),
+                    'help' => 'setlayoutcolumnorientation',
+                    'help_component' => 'format_topcoll',
+                    'element_type' => 'select',
+                    'element_attributes' => array(
+                        array(1 => get_string('columnvertical', 'format_topcoll'), 
+                              2 => get_string('columnhorizontal', 'format_topcoll')) // Default 
+                    )
+                )                
             );
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }

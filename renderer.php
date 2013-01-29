@@ -36,11 +36,14 @@ class format_columns_renderer extends format_section_renderer_base {
     private $cncolumnwidth = 100; /* Default width in percent of the column(s). */
     private $cncolumnpadding = 0; /* Defailt padding in pixels of the column(s). */
     private $mymobiletheme = false; /* As not using the MyMobile theme we can react to the number of columns setting. */
+    private $courseformat; // Our course format object as defined in lib.php;
+    private $cnsettings; // Settings for the format.
 
     /**
      * Generate the starting container html for a list of sections
      * @return string HTML to output.
      */
+
     protected function start_section_list() {
         return html_writer::start_tag('ul', array('class' => 'cntopics'));
     }
@@ -50,7 +53,19 @@ class format_columns_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     protected function start_columns_section_list() {
-        return html_writer::start_tag('ul', array('class' => 'cntopics topics', 'style' => 'width:' . $this->cncolumnwidth . '%; float:left; padding:' . $this->cncolumnpadding . 'px;'));
+        $attributes = array('class' => 'cntopics topics');
+        $style = '';
+        if ($this->cnsettings['layoutcolumnorientation'] == 1) {
+            $style .= 'width:' . $this->cncolumnwidth . '%;';  // Vertical columns.
+        } else {
+            $style .= 'width:100%;';  // Horizontal columns.
+        }
+        if ($this->mymobiletheme == false) {
+            $style .= ' float:left;';
+        }
+        $style .= ' padding:' . $this->cncolumnpadding . 'px;';
+        $attributes['style'] = $style;
+        return html_writer::start_tag('ul', $attributes);
     }
 
     /**
@@ -153,6 +168,71 @@ class format_columns_renderer extends format_section_renderer_base {
     }
 
     /**
+     * Generate the display of the header part of a section before
+     * course modules are included
+     *
+     * @param stdClass $section The course_section entry from DB
+     * @param stdClass $course The course entry from DB
+     * @param bool $onsectionpage true if being printed on a single-section page
+     * @param int $sectionreturn The section to return to after an action
+     * @return string HTML to output.
+     */
+    protected function section_header($section, $course, $onsectionpage, $sectionreturn = null) {
+        global $PAGE;
+
+        $o = '';
+        $sectionstyle = '';
+
+        if ($section->section != 0) {
+            // Only in the non-general sections.
+            if (!$section->visible) {
+                $sectionstyle = ' hidden';
+            } else if (course_get_format($course)->is_section_current($section)) {
+                $sectionstyle = ' current';
+            }
+        }
+
+        $liattributes = array('id' => 'section-' . $section->section,
+            'class' => 'section main clearfix' . $sectionstyle);
+        if ($this->cnsettings['layoutcolumnorientation'] == 2) { // Horizontal column layout.
+            $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
+        }
+        $o .= html_writer::start_tag('li', $liattributes);
+
+        $leftcontent = $this->section_left_content($section, $course, $onsectionpage);
+        $o.= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
+
+        $rightcontent = $this->section_right_content($section, $course, $onsectionpage);
+        $o.= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
+        $o.= html_writer::start_tag('div', array('class' => 'content'));
+
+        // When not on a section page, we display the section titles except the general section if null
+        $hasnamenotsecpg = (!$onsectionpage && ($section->section != 0 || !is_null($section->name)));
+
+        // When on a section page, we only display the general section title, if title is not the default one
+        $hasnamesecpg = ($onsectionpage && ($section->section == 0 && !is_null($section->name)));
+
+        if ($hasnamenotsecpg || $hasnamesecpg) {
+            $o.= $this->output->heading($this->section_title($section, $course), 3, 'sectionname');
+        }
+
+        $o.= html_writer::start_tag('div', array('class' => 'summary'));
+        $o.= $this->format_summary_text($section);
+
+        $context = context_course::instance($course->id);
+        if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
+            $url = new moodle_url('/course/editsection.php', array('id' => $section->id, 'sr' => $sectionreturn));
+            $o.= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),
+                                'class' => 'iconsmall edit', 'alt' => get_string('edit'))), array('title' => get_string('editsummary')));
+        }
+        $o.= html_writer::end_tag('div');
+
+        $o .= $this->section_availability_message($section, has_capability('moodle/course:viewhiddensections', $context));
+
+        return $o;
+    }
+
+    /**
      * Generate the display of the footer part of a section
      *
      * @return string HTML to output.
@@ -193,7 +273,7 @@ class format_columns_renderer extends format_section_renderer_base {
         $o .= $this->output->render($select);
 
         return $o;
-    }    
+    }
 
     /**
      * Output the html for a single section page.
@@ -311,8 +391,11 @@ class format_columns_renderer extends format_section_renderer_base {
         $userisediting = $PAGE->user_is_editing();
 
         $modinfo = get_fast_modinfo($course);
-        $courseformat = course_get_format($course);
-        $course = $courseformat->get_course();
+        $this->courseformat = course_get_format($course);
+        $course = $this->courseformat->get_course();
+        if (empty($this->tcsettings)) {
+            $this->cnsettings = $this->courseformat->get_settings();
+        }
 
         $context = context_course::instance($course->id);
         // Title with completion help icon.
@@ -405,17 +488,19 @@ class format_columns_renderer extends format_section_renderer_base {
             }
 
 
-            if (($canbreak == false) && ($showsection == true)) {
-                $canbreak = true;
-                $columnbreakpoint = ($shownsectioncount + ($numsections / $cnsetting['columns'])) - 1;
-            }
+            if ($this->cnsettings['layoutcolumnorientation'] == 1) {  // Only break columns in horizontal mode.
+                if (($canbreak == false) && ($showsection == true)) {
+                    $canbreak = true;
+                    $columnbreakpoint = ($shownsectioncount + ($numsections / $cnsetting['columns'])) - 1;
+                }
 
-            if (($canbreak == true) && ($shownsectioncount >= $columnbreakpoint) && ($columncount < $cnsetting['columns'])) {
-                echo $this->end_section_list();
-                echo $this->start_columns_section_list();
-                $columncount++;
-                // Next breakpoint is...
-                $columnbreakpoint += $numsections / $cnsetting['columns'];
+                if (($canbreak == true) && ($shownsectioncount >= $columnbreakpoint) && ($columncount < $cnsetting['columns'])) {
+                    echo $this->end_section_list();
+                    echo $this->start_columns_section_list();
+                    $columncount++;
+                    // Next breakpoint is...
+                    $columnbreakpoint += $numsections / $cnsetting['columns'];
+                }
             }
             unset($sections[$section]);
             $section++;
