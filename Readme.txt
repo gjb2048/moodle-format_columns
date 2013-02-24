@@ -110,10 +110,14 @@ Version Information
   1.  Implemented the ability to set horizontal and vertical column orientation.
   2.  If you find that the format works well and has no issues, please let me know so that I can make it stable.
 
+24th February 2013 - Version 2.4.0.6 - Beta - Do not install on production sites.
+  1. Changes because of MDL-37976.
+  2. Changes because of MDL-37901.
+
 References
 ----------
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 29th January 2013.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 24th February 2013.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard
