@@ -114,10 +114,14 @@ Version Information
   1. Changes because of MDL-37976.
   2. Changes because of MDL-37901.
 
+6th March 2013 - Version 2.4.1 - Stable.
+  1. Fixed issue with strings referencing Collapsed Topics format thanks to Jago Brown.
+  2. Made stable as appears to be so.
+
 References
 ----------
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 24th February 2013.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 6th March 2013.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard

@@ -257,13 +257,13 @@ class format_columns extends format_base {
                     )
                 ),
                 'layoutcolumnorientation' => array(
-                    'label' => new lang_string('setlayoutcolumnorientation', 'format_topcoll'),
+                    'label' => new lang_string('setlayoutcolumnorientation', 'format_columns'),
                     'help' => 'setlayoutcolumnorientation',
-                    'help_component' => 'format_topcoll',
+                    'help_component' => 'format_columns',
                     'element_type' => 'select',
                     'element_attributes' => array(
-                        array(1 => get_string('columnvertical', 'format_topcoll'), 
-                              2 => get_string('columnhorizontal', 'format_topcoll')) // Default 
+                        array(1 => get_string('columnvertical', 'format_columns'), 
+                              2 => get_string('columnhorizontal', 'format_columns')) // Default 
                     )
                 )                
             );
