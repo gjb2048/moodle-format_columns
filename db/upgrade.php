@@ -61,5 +61,11 @@ function xmldb_format_columns_upgrade($oldversion = 0) {
             $dbman->drop_table($table);
         } //else Nothing to do as settings put in DB on first use.
     }
+
+    // Automatic 'Purge all caches'....
+    if ($oldversion < 2013030601) {
+        purge_all_caches();
+    }
+
     return $result;
 }

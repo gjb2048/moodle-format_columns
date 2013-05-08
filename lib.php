@@ -27,7 +27,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-require_once($CFG->dirroot . '/course/format/columns/cnconfig.php'); // For Columns defaults.
 require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
 
 class format_columns extends format_base {
@@ -188,27 +187,30 @@ class format_columns extends format_base {
             $courseformatoptions = array(
                 'numsections' => array(
                     'default' => $courseconfig->numsections,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'hiddensections' => array(
                     'default' => $courseconfig->hiddensections,
-                    'type' => PARAM_INT,
+                    'type' => PARAM_INT
                 ),
                 'coursedisplay' => array(
-                    'default' => ColumnsDefaults::defaultcoursedisplay,
-                    'type' => PARAM_INT,
+                    'default' => get_config('format_columns', 'defaultcoursedisplay'),
+                    'type' => PARAM_INT
                 ),
                 'columns' => array(
-                    'default' => ColumnsDefaults::defaultcolumns,
-                    'type' => PARAM_INT,
+                    'default' => get_config('format_columns', 'defaultcolumns'),
+                    'type' => PARAM_INT
                 ),
-                'layoutcolumnorientation' => array(
-                    'default' => ColumnsDefaults::defaultlayoutcolumnorientation,
-                    'type' => PARAM_INT,
+                'columnorientation' => array(
+                    'default' => get_config('format_columns', 'defaultcolumnorientation'),
+                    'type' => PARAM_INT
                 )
             );
         }
         if ($foreditform && !isset($courseformatoptions['coursedisplay']['label'])) {
+            global $COURSE;
+            $coursecontext = context_course::instance($COURSE->id);
+
             $courseconfig = get_config('moodlecourse');
             $sectionmenu = array();
             for ($i = 0; $i <= $courseconfig->maxsections; $i++) {
@@ -218,7 +220,7 @@ class format_columns extends format_base {
                 'numsections' => array(
                     'label' => new lang_string('numbersections', 'format_columns'),
                     'element_type' => 'select',
-                    'element_attributes' => array($sectionmenu),
+                    'element_attributes' => array($sectionmenu)
                 ),
                 'hiddensections' => array(
                     'label' => new lang_string('hiddensections'),
@@ -230,7 +232,7 @@ class format_columns extends format_base {
                             0 => new lang_string('hiddensectionscollapsed'),
                             1 => new lang_string('hiddensectionsinvisible')
                         )
-                    ),
+                    )
                 ),
                 'coursedisplay' => array(
                     'label' => new lang_string('coursedisplay'),
@@ -242,31 +244,37 @@ class format_columns extends format_base {
                         )
                     ),
                     'help' => 'coursedisplay',
-                    'help_component' => 'moodle',
-                ),
-                'columns' => array(
+                    'help_component' => 'moodle'
+                ));
+            if (has_capability('format/columns:changecolumns', $coursecontext)) {
+                $courseformatoptionsedit['columns'] = array(
                     'label' => new lang_string('setcolumns', 'format_columns'),
                     'help' => 'setcolumns',
                     'help_component' => 'format_columns',
                     'element_type' => 'select',
                     'element_attributes' => array(
-                        array(1 => get_string('one', 'format_columns'), // Default
-                            2 => get_string('two', 'format_columns'), // Two   
-                            3 => get_string('three', 'format_columns'), // Three
-                            4 => get_string('four', 'format_columns')) // Four
+                        array(1 => get_string('one', 'format_columns'),   // One
+                              2 => get_string('two', 'format_columns'),   // Two
+                              3 => get_string('three', 'format_columns'), // Three
+                              4 => get_string('four', 'format_columns'))  // Four
                     )
-                ),
-                'layoutcolumnorientation' => array(
-                    'label' => new lang_string('setlayoutcolumnorientation', 'format_columns'),
-                    'help' => 'setlayoutcolumnorientation',
+                );
+                $courseformatoptionsedit['columnorientation'] = array(
+                    'label' => new lang_string('setcolumnorientation', 'format_columns'),
+                    'help' => 'setcolumnorientation',
                     'help_component' => 'format_columns',
                     'element_type' => 'select',
                     'element_attributes' => array(
                         array(1 => get_string('columnvertical', 'format_columns'), 
                               2 => get_string('columnhorizontal', 'format_columns')) // Default 
                     )
-                )                
-            );
+                );
+            } else {
+                $courseformatoptionsedit['columns'] =
+                    array('label' => new lang_string('setcolumns', 'format_columns'), 'element_type' => 'hidden');
+                $courseformatoptionsedit['columnorientation'] =
+                    array('label' => new lang_string('setcolumnorientation', 'format_columns'), 'element_type' => 'hidden');
+            }
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
         return $courseformatoptions;
@@ -282,23 +290,29 @@ class format_columns extends format_base {
      * @return array array of references to the added form elements
      */
     public function create_edit_form_elements(&$mform, $forsection = false) {
-        global $CFG;
 
         $elements = parent::create_edit_form_elements($mform, $forsection);
 
         if ($forsection == false) {
-            global $CFG, $USER;
+            global $COURSE, $USER;
+            $coursecontext = context_course::instance($COURSE->id);
 
-            $elements[] = $mform->addElement('header', 'cnreset', get_string('cnreset', 'format_columns'));
-            $mform->addHelpButton('cnreset', 'cnreset', 'format_columns', '', true);
-            $elements[] = $mform->addElement('checkbox', 'resetcolumns', get_string('resetcolumns', 'format_columns'), false);
-            $mform->setAdvanced('resetcolumns');
-            $mform->addHelpButton('resetcolumns', 'resetcolumns', 'format_columns', '', true);
+            $changecolumns = has_capability('format/columns:changecolumns', $coursecontext);
+            $resetall = is_siteadmin($USER); // Site admins only.
+
+            if ($changecolumns || $resetall) {
+                $elements[] = $mform->addElement('header', 'cnreset', get_string('cnreset', 'format_columns'));
+            }
+
+            if ($changecolumns) {
+                $mform->addHelpButton('cnreset', 'cnreset', 'format_columns', '', true);
+                $elements[] = $mform->addElement('checkbox', 'resetcolumns', get_string('resetcolumns', 'format_columns'), false);
+                $mform->addHelpButton('resetcolumns', 'resetcolumns', 'format_columns', '', true);
+            }
 
             if (is_siteadmin($USER)) {
                 $elements[] = $mform->addElement('checkbox', 'resetallcolumns', get_string('resetallcolumns', 'format_columns'), false);
                 $mform->addHelpButton('resetallcolumns', 'resetallcolumns', 'format_columns', '', true);
-                $mform->setAdvanced('resetallcolumns');
             }
         }
 
@@ -311,7 +325,7 @@ class format_columns extends format_base {
      * In case if course format was changed to 'Columns', we try to copy options
      * 'coursedisplay', 'numsections' and 'hiddensections' from the previous format.
      * If previous course format did not have 'numsections' option, we populate it with the
-     * current number of sections.  The layout and colour defaults will come from 'course_format_options'.
+     * current number of sections.  The defaults will come from 'course_format_options'.
      *
      * @param stdClass|array $data return value from {@link moodleform::get_data()} or array with data
      * @param stdClass $oldcourse if this function is called from {@link update_course()}
@@ -377,7 +391,7 @@ class format_columns extends format_base {
      * @param int $courseid If not 0, then a specific course to reset.
      */
     public function reset_columns_setting($courseid) {
-        global $DB;
+        global $DB, $USER, $COURSE;
 
         $currentcourseid = 0;
         if ($courseid == 0) {
@@ -386,15 +400,23 @@ class format_columns extends format_base {
             $records = $DB->get_records('course_format_options', array('courseid' => $courseid, 'format' => $this->format), '', 'id,courseid');
         }
 
+        $resetallifall = ((is_siteadmin($USER)) || ($courseid != 0)); // Will be true if reset all capability or a single course.
+
+        $coursecontext = context_course::instance($COURSE->id);
+
+        $updatedata = array();
+        if (has_capability('format/columns:changecolumns', $coursecontext) && $resetallifall) {
+            $updatedata['coursedisplay'] = get_config('format_columns', 'defaultcoursedisplay');
+            $updatedata['columns'] = get_config('format_columns', 'defaultcolumns');
+            $updatedata['columnorientation'] = get_config('format_columns', 'defaultcolumnorientation');
+        }
+
         foreach ($records as $record) {
             if ($currentcourseid != $record->courseid) {
                 $currentcourseid = $record->courseid; // Only do once per course.
-                $layoutdata = array(
-                    'coursedisplay' => ColumnsDefaults::defaultcoursedisplay,
-                    'columns' => ColumnsDefaults::defaultcolumns);
                 $ourcourseid = $this->courseid;
                 $this->courseid = $currentcourseid;
-                $this->update_format_options($layoutdata);
+                $this->update_format_options($updatedata);
                 $this->courseid = $ourcourseid;
             }
         }
