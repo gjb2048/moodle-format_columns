@@ -32,6 +32,19 @@ require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
 
 class format_columns extends format_base {
 
+    private $settings;
+
+    /**
+     * Returns the format's settings and gets them if they do not exist.
+     * @return type The settings as an array.
+     */
+    public function get_settings() {
+        if (empty($this->settings) == true) {
+            $this->settings = $this->get_format_options();
+        }
+        return $this->settings;
+    }
+
     /**
      * Indicates this format uses sections.
      *
@@ -188,6 +201,10 @@ class format_columns extends format_base {
                 'columns' => array(
                     'default' => ColumnsDefaults::defaultcolumns,
                     'type' => PARAM_INT,
+                ),
+                'layoutcolumnorientation' => array(
+                    'default' => ColumnsDefaults::defaultlayoutcolumnorientation,
+                    'type' => PARAM_INT,
                 )
             );
         }
@@ -238,7 +255,17 @@ class format_columns extends format_base {
                             3 => get_string('three', 'format_columns'), // Three
                             4 => get_string('four', 'format_columns')) // Four
                     )
-                )
+                ),
+                'layoutcolumnorientation' => array(
+                    'label' => new lang_string('setlayoutcolumnorientation', 'format_columns'),
+                    'help' => 'setlayoutcolumnorientation',
+                    'help_component' => 'format_columns',
+                    'element_type' => 'select',
+                    'element_attributes' => array(
+                        array(1 => get_string('columnvertical', 'format_columns'), 
+                              2 => get_string('columnhorizontal', 'format_columns')) // Default 
+                    )
+                )                
             );
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
@@ -292,11 +319,10 @@ class format_columns extends format_base {
      * @return bool whether there were any changes to the options values
      */
     public function update_course_format_options($data, $oldcourse = null) {
-
-//print_object($data);
-// Notes: Using 'unset' to really ensure that the reset form elements never get into the database.
-//        This has to be done here so that the reset occurs after we have done updates such that the
-//        reset itself is not seen as an update.
+        global $DB; // MDL-37976.
+        // Notes: Using 'unset' to really ensure that the reset form elements never get into the database.
+        //        This has to be done here so that the reset occurs after we have done updates such that the
+        //        reset itself is not seen as an update.
         $resetcolumns = false;
         $resetallcolumns = false;
         if (isset($data->resetcolumns) == true) {
@@ -317,13 +343,13 @@ class format_columns extends format_base {
                     if (array_key_exists($key, $oldcourse)) {
                         $data[$key] = $oldcourse[$key];
                     } else if ($key === 'numsections') {
-// If previous format does not have the field 'numsections'
-// and $data['numsections'] is not set,
-// we fill it with the maximum section number from the DB
+                        // If previous format does not have the field 'numsections'
+                        // and $data['numsections'] is not set,
+                        // we fill it with the maximum section number from the DB
                         $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections}
                             WHERE course = ?', array($this->courseid));
                         if ($maxsection) {
-// If there are no sections, or just default 0-section, 'numsections' will be set to default
+                            // If there are no sections, or just default 0-section, 'numsections' will be set to default
                             $data['numsections'] = $maxsection;
                         }
                     }
@@ -332,7 +358,7 @@ class format_columns extends format_base {
         }
         $changes = $this->update_format_options($data);
 
-// Now we can do the reset.
+        // Now we can do the reset.
         if ($resetcolumns == true) {
             $this->reset_columns_setting($this->courseid);
             $changes = true;
@@ -397,7 +423,7 @@ class format_columns extends format_base {
      * @param int $columns The columns to use, see cnconfig.php.
      */
     public function update_columns_columns_setting($columns) {
-// Create data array.
+        // Create data array.
         $data = array('columns' => $columns);
 
         $this->update_course_format_options($data);

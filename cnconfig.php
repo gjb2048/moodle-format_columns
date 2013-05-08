@@ -36,6 +36,9 @@ class ColumnsDefaults {
 
     // Default number of columns between 1 and 4.
     const defaultcolumns = 2;
+    
+    // Default column orientation - 1 = vertical and 2 = horizontal.
+    const defaultlayoutcolumnorientation = 2;    
 }
 
 ?>
