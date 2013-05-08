@@ -57,47 +57,6 @@ $courseformat = course_get_format($course);
 $course = $courseformat->get_course();
 course_create_sections_if_missing($course, range(0, $course->numsections));
 
-$cnsettings = $courseformat->get_settings();
-
-    ?>
-    <style type="text/css" media="screen">
-        /* <![CDATA[ */
-
-        /* Dynamically changing widths with editing mode such that the icons on the left and right will fit */
-        .course-content ul.cntopics li.section.main .content, .course-content ul.cntopics li.cnsection .content {
-            <?php
-            if (($PAGE->user_is_editing()) && ($PAGE->theme->name != 'mymobile')) {
-                echo 'margin: 0 ' . get_string('columnssidewidth', 'format_columns');
-            }
-
-            ?>;
-        }
-
-        .course-content ul.cntopics li.section.main .side, .course-content ul.cntopics li.cnsection .side {
-            <?php
-            if ($PAGE->user_is_editing()) {
-                echo 'width: ' . get_string('columnssidewidth', 'format_columns');
-            }
-            ?>;
-        }
-        
-        <?php
-        // Establish horizontal unordered list for horizontal columns
-        if ($cnsettings['columnorientation'] == 2) {
-            echo '.course-content ul.cntopics li.section {';
-            echo 'display: inline-block;';
-            echo 'vertical-align:top;';
-            echo '}';
-            echo 'body.ie7 .course-content ul.cntopics li.section {';
-            echo 'zoom: 1;';
-            echo '*display: inline;';
-            echo '}';
-        }
-        ?>
-        /* ]]> */
-    </style>
-    <?php
-
 $context = context_course::instance($course->id);
 
 if (($marker >= 0) && has_capability('moodle/course:setcurrentsection', $context) && confirm_sesskey()) {
@@ -119,6 +78,41 @@ if (!empty($displaysection)) {
         $portable = 0;
     }
     $renderer->set_portable($portable);
+    $cnsettings = $courseformat->get_settings();
+    ?>
+    <style type="text/css" media="screen">
+    /* <![CDATA[ */
+
+    <?php
+    // Dynamically changing widths with language.
+    if ((!$PAGE->user_is_editing()) && ($portable == 0)) {
+        echo '.course-content ul.ctopics li.section.main .content, .course-content ul.ctopics li.tcsection .content {';
+        echo 'margin: 0 ' . get_string('topcollsidewidth', 'format_topcoll');
+        echo '}';
+    }
+
+    // Make room for editing icons.
+    if (!$PAGE->user_is_editing()) {
+        echo '.course-content ul.ctopics li.section.main .side, .course-content ul.ctopics li.tcsection .side {';
+        echo 'width: ' . get_string('topcollsidewidth', 'format_topcoll');
+        echo '}';
+    }
+
+    // Establish horizontal unordered list for horizontal columns.
+    if ($cnsettings['columnorientation'] == 2) {
+        echo '.course-content ul.cntopics li.section {';
+        echo 'display: inline-block;';
+        echo 'vertical-align:top;';
+        echo '}';
+        echo 'body.ie7 .course-content ul.ctopics li.section {';
+        echo 'zoom: 1;';
+        echo '*display: inline;';
+        echo '}';
+    }
+    ?>;
+    /* ]]> */
+    </style>
+    <?php
     $renderer->print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused);
 }
 

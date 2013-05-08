@@ -270,7 +270,7 @@ class format_columns extends format_base {
                     )
                 );
             } else {
-                $courseformatptionsedit['columns'] =
+                $courseformatoptionsedit['columns'] =
                     array('label' => new lang_string('setcolumns', 'format_columns'), 'element_type' => 'hidden');
                 $courseformatoptionsedit['columnorientation'] =
                     array('label' => new lang_string('setcolumnorientation', 'format_columns'), 'element_type' => 'hidden');

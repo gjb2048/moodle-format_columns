@@ -34,7 +34,7 @@ require_once($CFG->dirroot . '/course/format/columns/lib.php');
 class format_columns_renderer extends format_section_renderer_base {
 
     private $cncolumnwidth = 100; /* Default width in percent of the column(s). */
-    private $cncolumnpadding = 0; /* Defailt padding in pixels of the column(s). */
+    private $cncolumnpadding = 0; /* Default padding in pixels of the column(s). */
     private $mobiletheme = false; /* As not using a mobile theme we can react to the number of columns setting. */
     private $tablettheme = false; /* As not using a tablet theme we can react to the number of columns setting. */
     private $courseformat; // Our course format object as defined in lib.php;
@@ -292,8 +292,8 @@ class format_columns_renderer extends format_section_renderer_base {
             }
         }
 
-        $o.= html_writer::start_tag('div', array('class' => 'summary'));
-        $o.= $this->format_summary_text($section);
+        $o .= html_writer::start_tag('div', array('class' => 'summary'));
+        $o .= $this->format_summary_text($section);
 
         $context = context_course::instance($course->id);
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
@@ -301,7 +301,7 @@ class format_columns_renderer extends format_section_renderer_base {
             $o.= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),
                                 'class' => 'iconsmall edit', 'alt' => get_string('edit'))), array('title' => get_string('editsummary')));
         }
-        $o.= html_writer::end_tag('div');
+        $o .= html_writer::end_tag('div');
 
         $o .= $this->section_availability_message($section, has_capability('moodle/course:viewhiddensections', $context));
 
@@ -524,7 +524,7 @@ class format_columns_renderer extends format_section_renderer_base {
             }
 
 
-            if ($this->cnsettings['columnorientation'] == 1) {  // Only break columns in horizontal mode.
+            if ($this->cnsettings['columnorientation'] == 1) {  // Only break columns in vertical mode.
                 if (($canbreak == false) && ($showsection == true)) {
                     $canbreak = true;
                     $columnbreakpoint = ($shownsectioncount + ($numsections / $this->cnsettings['columns'])) - 1;
