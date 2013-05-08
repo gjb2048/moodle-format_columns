@@ -67,12 +67,28 @@ $string['numbersections'] = 'Number of sections';
 $string['cnreset'] = 'Columns format reset options';
 $string['cnreset_help'] = 'Reset to Columns format defaults that are in the cnconfig.php file.';
 
-$string['setlayoutcolumnorientation'] = 'Set column orientation';
+$string['setlayoutcolumnorientation'] = 'Set column orientation'; // Old
+$string['setcolumnorientation'] = 'Set column orientation';
 $string['columnvertical'] = 'Vertical';
 $string['columnhorizontal'] = 'Horizontal';
 $string['setlayoutcolumnorientation_help'] =
 'Vertical - Sections go top to bottom.
 
+Horizontal - Sections go left to right.'; // Old
+$string['setcolumnorientation_help'] =
+'Vertical - Sections go top to bottom.
+
 Horizontal - Sections go left to right.';
 
+// Site Administration -> Plugins -> Course formats -> Columns or Manage course formats - Settings.
+$string['defaultcoursedisplay'] = 'Course display default';
+$string['defaultcoursedisplay_desc'] = "Either show all the sections on a single page or section zero and the chosen section on page.";
+
+$string['defaultcolumns'] = 'Default number of columns';
+$string['defaultcolumns_desc'] = "Number of columns between one and four.";
+
+$string['defaultcolumnorientation'] = 'Default column orientation';
+$string['defaultcolumnorientation_desc'] = "The default column orientation: Vertical or Horizontal.";
+// Capabilities.
+$string['columns:changecolumns'] = 'Change or reset the columns';
 ?>

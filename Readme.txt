@@ -128,13 +128,17 @@ Version Information
   4.  Improvements for MDL-34917.
   5.  Realised that Tablets have more space, so allow two columns even when two or more are set.
   6.  Updated core API calls to M2.5.
-  7.  Added automatic 'Purge all caches' when upgrading.  If this appears not to work by lack of display etc. then perform a
+  7.  Moved all 'cnconfig.php' default functionalty to 'Site Administration -> Plugins -> Course formats -> Columns'
+      so that defaults can be changed by the administrator from within Moodle without resorting to code changes.
+  8.  Added capability 'format/columns:changecolumns' to editing teachers and managers such that site administrators can choose to
+      disable functionality through roles if they wish.  In order for this to work the version number must be updated.
+  9.  Added automatic 'Purge all caches' when upgrading.  If this appears not to work by lack of display etc. then perform a
       manual 'Purge all caches' under 'Home -> Site administration -> Development -> Purge all caches'.
 
 References
 ----------
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 6th March 2013.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 8th May 2013.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard

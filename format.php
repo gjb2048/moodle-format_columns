@@ -83,7 +83,7 @@ $cnsettings = $courseformat->get_settings();
         
         <?php
         // Establish horizontal unordered list for horizontal columns
-        if ($cnsettings['layoutcolumnorientation'] == 2) {
+        if ($cnsettings['columnorientation'] == 2) {
             echo '.course-content ul.cntopics li.section {';
             echo 'display: inline-block;';
             echo 'vertical-align:top;';

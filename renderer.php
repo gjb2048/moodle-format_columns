@@ -56,7 +56,7 @@ class format_columns_renderer extends format_section_renderer_base {
     protected function start_columns_section_list() {
         $classes = 'cntopics topics';
         $style = '';
-        if ($this->cnsettings['layoutcolumnorientation'] == 1) {
+        if ($this->cnsettings['columnorientation'] == 1) {
             $style .= 'width:' . $this->cncolumnwidth . '%;';  // Vertical columns.
         } else {
             $style .= 'width:100%;';  // Horizontal columns.
@@ -191,7 +191,7 @@ class format_columns_renderer extends format_section_renderer_base {
 
         $o = '';
         $liattributes = array('id' => 'section-'.$section->section, 'class' => $classattr);
-        if ($this->cnsettings['layoutcolumnorientation'] == 2) { // Horizontal column layout.
+        if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
             $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
         }
         $o .= html_writer::start_tag('li', $liattributes);
@@ -249,7 +249,7 @@ class format_columns_renderer extends format_section_renderer_base {
 
         $liattributes = array('id' => 'section-' . $section->section,
             'class' => 'section main clearfix' . $sectionstyle);
-        if ($this->cnsettings['layoutcolumnorientation'] == 2) { // Horizontal column layout.
+        if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
             $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
         }
         $o .= html_writer::start_tag('li', $liattributes);
@@ -524,7 +524,7 @@ class format_columns_renderer extends format_section_renderer_base {
             }
 
 
-            if ($this->cnsettings['layoutcolumnorientation'] == 1) {  // Only break columns in horizontal mode.
+            if ($this->cnsettings['columnorientation'] == 1) {  // Only break columns in horizontal mode.
                 if (($canbreak == false) && ($showsection == true)) {
                     $canbreak = true;
                     $columnbreakpoint = ($shownsectioncount + ($numsections / $this->cnsettings['columns'])) - 1;
