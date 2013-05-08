@@ -110,6 +110,15 @@ $renderer = $PAGE->get_renderer('format_columns');
 if (!empty($displaysection)) {
     $renderer->print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection);
 } else {
+    $devicetype = get_device_type(); // In moodlelib.php.
+    if ($devicetype == "mobile") {
+        $portable = 1;
+    } else if ($devicetype == "tablet") {
+        $portable = 2;
+    } else {
+        $portable = 0;
+    }
+    $renderer->set_portable($portable);
     $renderer->print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused);
 }
 

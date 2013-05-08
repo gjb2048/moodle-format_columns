@@ -6,7 +6,7 @@ If you find an issue with the format, please see the 'Reporting Issues' section 
 
 Required version of Moodle
 --------------------------
-This version works with Moodle 2.4 version 2012120300.00 (Build: 20121203) and above until the next release.
+This version works with Moodle version 2013050200.00 release 2.5beta+ (Build: 20130502) and above until the next release.
 
 Supporting Columns Topics development
 ------------------------------------
@@ -117,6 +117,19 @@ Version Information
 6th March 2013 - Version 2.4.1 - Stable.
   1. Fixed issue with strings referencing Collapsed Topics format thanks to Jago Brown.
   2. Made stable as appears to be so.
+
+8th May 2013 - Version 2.5.0.1 - Beta
+  1.  Fixed "When in 'Show one section per page' mode and the column orientation is set to 'Horizontal' the sections on the main
+      page do not fill their correct width.  This is due to the use of the 'section_summary()' method which needs to be changed
+      within the format to set the calculated width on the 'li' tag." because the core fix I submitted on MDL-39099 has now
+      been integrated.  Thus requiring version 2013050200.00 2.5beta+ (Build: 20130502).
+  2.  Removed '.jumpmenu' from styles.css because of MDL-38907.
+  3.  Moved 'float: left' to styles.css for Henrik Thorn - CONTRIB-4198.
+  4.  Improvements for MDL-34917.
+  5.  Realised that Tablets have more space, so allow two columns even when two or more are set.
+  6.  Updated core API calls to M2.5.
+  7.  Added automatic 'Purge all caches' when upgrading.  If this appears not to work by lack of display etc. then perform a
+      manual 'Purge all caches' under 'Home -> Site administration -> Development -> Purge all caches'.
 
 References
 ----------

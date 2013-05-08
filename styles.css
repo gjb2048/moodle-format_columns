@@ -29,7 +29,9 @@
 .course-content ul.cntopics {
     margin:0;
 }
-
+.course-content ul.cnlayout {
+    float: left;
+}
 .course-content ul.cntopics li.section.main, .course-content ul.cntopics li.cnsection {
     list-style: none;
     margin: 1px 1px 1px 1px;
@@ -80,8 +82,8 @@
     line-height: 1.3;
 }
 
-.jumpmenu {
-    text-align:center;
+.course-content ul.cntopics li.section .right .cneditsection {
+    float: left;
 }
 
 /* -- Size of the spacer row -- */
