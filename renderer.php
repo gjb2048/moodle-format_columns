@@ -237,6 +237,7 @@ class format_columns_renderer extends format_section_renderer_base {
 
         $o = '';
         $sectionstyle = '';
+        $context = context_course::instance($course->id);
 
         if ($section->section != 0) {
             // Only in the non-general sections.
@@ -451,8 +452,8 @@ class format_columns_renderer extends format_section_renderer_base {
         unset($sections[0]);
         if ($thissection->summary or !empty($modinfo->sections[0]) or $PAGE->user_is_editing()) {
             echo $this->section_header($thissection, $course, false, 0);
-            echo $this->courserenderer->course_section_cm_list($course, $thissection);
-            echo $this->courserenderer->course_section_add_cm_control($course, $thissection->section);
+            echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+            echo $this->courserenderer->course_section_add_cm_control($course, $thissection->section, 0);
             echo $this->section_footer();
         }
 
@@ -515,8 +516,8 @@ class format_columns_renderer extends format_section_renderer_base {
                 } else {
                     echo $this->section_header($thissection, $course, false, 0);
                     if ($thissection->uservisible) {
-                        echo $this->courserenderer->course_section_cm_list($course, $thissection);
-                        echo $this->courserenderer->course_section_add_cm_control($course, $thissection->section);
+                        echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
+                        echo $this->courserenderer->course_section_add_cm_control($course, $thissection->section, 0);
                     }
                     echo html_writer::end_tag('div');
                     echo $this->section_footer();
@@ -544,13 +545,13 @@ class format_columns_renderer extends format_section_renderer_base {
 
         if ($PAGE->user_is_editing() and has_capability('moodle/course:update', $context)) {
             // Print stealth sections if present.
-            $modinfo = get_fast_modinfo($course);
-            foreach ($sections as $section => $thissection) {
-                if (empty($modinfo->sections[$section])) {
+            foreach ($modinfo->get_section_info_all() as $section => $thissection) {
+                if ($section <= $course->numsections or empty($modinfo->sections[$section])) {
+                    // this is not stealth section or it is empty
                     continue;
                 }
                 echo $this->stealth_section_header($section);
-                print_section($course, $thissection, $mods, $modnamesused);
+                echo $this->courserenderer->course_section_cm_list($course, $thissection->section, 0);
                 echo $this->stealth_section_footer();
             }
 
