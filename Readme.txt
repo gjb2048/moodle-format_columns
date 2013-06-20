@@ -86,37 +86,11 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 -------------------
-12th November 2012 - Version 2.3.0.1 - Alpha - Do not install on production sites.
-  1.  First version.
-
-23rd November 2012 - Version 2.3.1 - Stable
-  1.  First stable version.
-
-10th December 2012 - Version 2.4.0.1 - Beta - Do not install on production sites.
-  1.  First Moodle 2.4 version.
-
-12th December 2012 - Version 2.4.0.2 - Beta - Do not install on production sites.
-  1.  Fix for related CONTRIB-4065.
-
-19th December 2012 - Version 2.4.0.3 - Beta - Do not install on production sites.
-  1.  Updated 'section_nav_selection()' in 'renderer.php' in line with course format refactoring by Marina Glancy.
-  2.  Minor refactor to remove redundant parameter on 'section_nav_selection()'.
-
-10th January 2013 - Version 2.4.0.4 - Beta - Do not install on production sites.
-  1.  Tidied up code to avoid use of globals.
-  2.  Removed installation instruction about file permissions on config.php which is not required.
-
-29th January 2013 - Version 2.4.0.5 - Beta - Do not install on production sites.
-  1.  Implemented the ability to set horizontal and vertical column orientation.
-  2.  If you find that the format works well and has no issues, please let me know so that I can make it stable.
-
-24th February 2013 - Version 2.4.0.6 - Beta - Do not install on production sites.
-  1. Changes because of MDL-37976.
-  2. Changes because of MDL-37901.
-
-6th March 2013 - Version 2.4.1 - Stable.
-  1. Fixed issue with strings referencing Collapsed Topics format thanks to Jago Brown.
-  2. Made stable as appears to be so.
+20th June 2013 Version 2.4.2.1
+  1.  Fixed issue with null '$context' in 'renderer.php' thanks to 'Jez H' for reporting this.
+  2.  Implemented MDL-39764 to fix maxsections < numsections issue.
+  3.  Added small icon which shows up when updating.
+  4.  Reversed the order of the history in this file for easy reading.
 
 8th May 2013 - Version 2.4.2
   1.  Fixed "When in 'Show one section per page' mode and the column orientation is set to 'Horizontal' the sections on the main
@@ -132,10 +106,42 @@ Version Information
   6.  Added automatic 'Purge all caches' when upgrading.  If this appears not to work by lack of display etc. then perform a
       manual 'Purge all caches' under 'Home -> Site administration -> Development -> Purge all caches'.
 
+6th March 2013 - Version 2.4.1 - Stable.
+  1. Fixed issue with strings referencing Collapsed Topics format thanks to Jago Brown.
+  2. Made stable as appears to be so.
+
+24th February 2013 - Version 2.4.0.6 - Beta - Do not install on production sites.
+  1. Changes because of MDL-37976.
+  2. Changes because of MDL-37901.
+
+29th January 2013 - Version 2.4.0.5 - Beta - Do not install on production sites.
+  1.  Implemented the ability to set horizontal and vertical column orientation.
+  2.  If you find that the format works well and has no issues, please let me know so that I can make it stable.
+
+10th January 2013 - Version 2.4.0.4 - Beta - Do not install on production sites.
+  1.  Tidied up code to avoid use of globals.
+  2.  Removed installation instruction about file permissions on config.php which is not required.
+
+19th December 2012 - Version 2.4.0.3 - Beta - Do not install on production sites.
+  1.  Updated 'section_nav_selection()' in 'renderer.php' in line with course format refactoring by Marina Glancy.
+  2.  Minor refactor to remove redundant parameter on 'section_nav_selection()'.
+
+12th December 2012 - Version 2.4.0.2 - Beta - Do not install on production sites.
+  1.  Fix for related CONTRIB-4065.
+
+10th December 2012 - Version 2.4.0.1 - Beta - Do not install on production sites.
+  1.  First Moodle 2.4 version.
+
+23rd November 2012 - Version 2.3.1 - Stable
+  1.  First stable version.
+
+12th November 2012 - Version 2.3.0.1 - Alpha - Do not install on production sites.
+  1.  First version.
+
 References
 ----------
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 6th March 2013.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 20th June 2013.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard

@@ -259,6 +259,7 @@ class format_columns_renderer extends format_section_renderer_base {
             $o .= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
         }
 
+        $context = context_course::instance($course->id);
         if (($this->mobiletheme === false) && ($this->tablettheme === false)) {
             $rightcontent = '';
             if (($section->section != 0) && $PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
@@ -295,7 +296,6 @@ class format_columns_renderer extends format_section_renderer_base {
         $o .= html_writer::start_tag('div', array('class' => 'summary'));
         $o .= $this->format_summary_text($section);
 
-        $context = context_course::instance($course->id);
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
             $url = new moodle_url('/course/editsection.php', array('id' => $section->id, 'sr' => $sectionreturn));
             $o.= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),

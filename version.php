@@ -30,8 +30,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2013030601;
+$plugin->version = 2013030602;
 $plugin->maturity = MATURITY_STABLE;
 $plugin->requires = 2012120303.11; // 2.4.3+ (Build: 20130502).
 $plugin->component = 'format_columns';
-$plugin->release = '2.4.2';
+$plugin->release = '2.4.2.1';
