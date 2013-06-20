@@ -41,6 +41,20 @@ class format_columns_renderer extends format_section_renderer_base {
     private $cnsettings; // Settings for the format.
 
     /**
+     * Constructor method, calls the parent constructor - MDL-21097
+     *
+     * @param moodle_page $page
+     * @param string $target one of rendering target constants
+     */
+    public function __construct(moodle_page $page, $target) {
+        parent::__construct($page, $target);
+
+        // Since format_columns_renderer::section_edit_controls() only displays the 'Set current section' control when editing mode is on
+        // we need to be sure that the link 'Turn editing mode on' is available for a user who does not have any other managing capability.
+        $page->set_other_editing_capability('moodle/course:setcurrentsection');
+    }
+
+    /**
      * Generate the starting container html for a list of sections
      * @return string HTML to output.
      */
@@ -260,6 +274,7 @@ class format_columns_renderer extends format_section_renderer_base {
             $o .= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
         }
 
+        $context = context_course::instance($course->id);
         if (($this->mobiletheme === false) && ($this->tablettheme === false)) {
             $rightcontent = '';
             if (($section->section != 0) && $PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
@@ -296,7 +311,6 @@ class format_columns_renderer extends format_section_renderer_base {
         $o .= html_writer::start_tag('div', array('class' => 'summary'));
         $o .= $this->format_summary_text($section);
 
-        $context = context_course::instance($course->id);
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
             $url = new moodle_url('/course/editsection.php', array('id' => $section->id, 'sr' => $sectionreturn));
             $o.= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),
