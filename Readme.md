@@ -89,6 +89,12 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
+19th August 2013 Version 2.5.1.2
+  1.  Fixed issue with the 'float: left' CSS style when used to ensure that the columns were displayed correctly in the
+      'vertical' column orientation.  The fix is to use 'display: inline-block' instead but this does not work in IE7, so as
+      it does in IE8+ and other browsers I'm going to have to go with it.  Thanks to Ed Przyzycki for reporting this via
+      Collapsed Topics.
+
 20th June 2013 Version 2.5.1.1.
   1.  Fixed issue with null '$context' in 'renderer.php' thanks to 'Jez H' for reporting this.
   2.  Implemented MDL-39764 to fix maxsections < numsections issue.

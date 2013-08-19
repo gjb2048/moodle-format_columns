@@ -29,9 +29,11 @@
 .course-content ul.cntopics {
     margin:0;
 }
+
 .course-content ul.cnlayout {
-    float: left;
+    display: inline-block;
 }
+
 .course-content ul.cntopics li.section.main, .course-content ul.cntopics li.cnsection {
     list-style: none;
     margin: 1px 1px 1px 1px;
