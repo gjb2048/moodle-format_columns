@@ -493,8 +493,12 @@ class format_columns_renderer extends format_section_renderer_base {
             }
 
             $this->cncolumnwidth = 100 / $this->cnsettings['columns'];
-            $this->cncolumnwidth -= 1; // Allow for the padding in %.
-            $this->cncolumnpadding = 2; // px
+            if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
+                $this->cncolumnwidth -= 1;
+            } else {
+                $this->cncolumnwidth -= 0.2;
+            }
+            $this->cncolumnpadding = 0; // px
         } elseif ($this->cnsettings['columns'] < 1) {
             // Default in cnconfig.php (and reset in database) or database has been changed incorrectly.
             $this->cnsettings['columns'] = 1;
