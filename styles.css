@@ -32,6 +32,7 @@
 
 .course-content ul.cnlayout {
     display: inline-block;
+    vertical-align: top;
 }
 
 .course-content ul.cntopics li.section.main, .course-content ul.cntopics li.cnsection {
@@ -50,6 +51,7 @@
     padding: 0px;
 }
 
+/* Left in as MyMobile is now a contributed plugin. */
 #mymobile .course-content ul.cntopics li.cnsection .content, #mymobile .course-content ul.cntopics li.section.main .content{
     margin: 0;
 }

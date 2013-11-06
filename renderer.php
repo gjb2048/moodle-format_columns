@@ -204,7 +204,8 @@ class format_columns_renderer extends format_section_renderer_base {
         }
 
         $o = '';
-        $liattributes = array('id' => 'section-'.$section->section, 'class' => $classattr);
+        $title = get_section_name($course, $section);
+        $liattributes = array('id' => 'section-'.$section->section, 'class' => $classattr, 'role'=>'region', 'aria-label'=> $title);
         if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
             $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
         }
@@ -214,7 +215,6 @@ class format_columns_renderer extends format_section_renderer_base {
         $o .= html_writer::tag('div', '', array('class' => 'right side'));
         $o .= html_writer::start_tag('div', array('class' => 'content'));
 
-        $title = get_section_name($course, $section);
         if ($section->uservisible) {
             $title = html_writer::tag('a', $title,
                     array('href' => course_get_url($course, $section->section), 'class' => $linkclasses));
@@ -262,8 +262,12 @@ class format_columns_renderer extends format_section_renderer_base {
             }
         }
 
-        $liattributes = array('id' => 'section-' . $section->section,
-            'class' => 'section main clearfix' . $sectionstyle);
+        $liattributes = array(
+            'id' => 'section-' . $section->section,
+            'class' => 'section main clearfix' . $sectionstyle,
+            'role' => 'region',
+            'aria-label' => $this->courseformat->get_section_name($section)
+        );
         if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
             $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
         }
@@ -297,7 +301,7 @@ class format_columns_renderer extends format_section_renderer_base {
             if (($this->mobiletheme === false) && ($this->tablettheme === false)) {
                 $o .= $this->output->heading($title, 3, 'sectionname');
             } else {
-                $o .= html_writer::tag('h3', $title); // Moodle H3's look bad on mobile / tablet with CT so use plain.
+                $o .= html_writer::tag('h3', $title); // Moodle H3's look bad on mobile / tablet with Columns so use plain.
             }
         } else {
             // When on a section page, we only display the general section title, if title is not the default one.
@@ -385,15 +389,15 @@ class format_columns_renderer extends format_section_renderer_base {
         // Title with section navigation links.
         $sectionnavlinks = $this->get_nav_links($course, $sections, $displaysection);
         $sectiontitle = '';
-        $sectiontitle .= html_writer::start_tag('div', array('class' => 'section-navigation header headingblock'));
+        $sectiontitle .= html_writer::start_tag('div', array('class' => 'section-navigation navigationtitle'));
         $sectiontitle .= html_writer::tag('span', $sectionnavlinks['previous'], array('class' => 'mdl-left'));
         $sectiontitle .= html_writer::tag('span', $sectionnavlinks['next'], array('class' => 'mdl-right'));
         // Title attributes
-        $titleattr = 'mdl-align title';
-        if (!$sections[$displaysection]->visible) {
-            $titleattr .= ' dimmed_text';
+        $classes = 'sectionname';
+        if (!$thissection->visible) {
+            $classes .= ' dimmed_text';
         }
-        $sectiontitle .= html_writer::tag('div', get_section_name($course, $sections[$displaysection]), array('class' => $titleattr));
+        $sectiontitle .= $this->output->heading(get_section_name($course, $displaysection), 3, $classes);
         $sectiontitle .= html_writer::end_tag('div');
         echo $sectiontitle;
 
@@ -467,7 +471,7 @@ class format_columns_renderer extends format_section_renderer_base {
         if ($thissection->summary or !empty($modinfo->sections[0]) or $PAGE->user_is_editing()) {
             echo $this->section_header($thissection, $course, false, 0);
             echo $this->courserenderer->course_section_cm_list($course, $thissection, 0);
-            echo $this->courserenderer->course_section_add_cm_control($course, $thissection->section, 0);
+            echo $this->courserenderer->course_section_add_cm_control($course, $thissection->section, 0, 0);
             echo $this->section_footer();
         }
 
