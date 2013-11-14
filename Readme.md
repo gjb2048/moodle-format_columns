@@ -90,7 +90,7 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
-6th November 2013 Version 2.6.0.1
+14th November 2013 Version 2.6.0.1
   1.  Initial BETA code for Moodle 2.6.
   2.  Changes for 'Accessibility' based upon MDL-41252.
   3.  Fully implemented MDL-39542.
@@ -169,6 +169,6 @@ References
 ==========
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 6th November 2013.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 14th November 2013.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard
