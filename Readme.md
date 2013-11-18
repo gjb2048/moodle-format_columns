@@ -6,14 +6,14 @@ If you find an issue with the format, please see the 'Reporting Issues' section 
 
 Required version of Moodle
 ==========================
-This version works with Moodle version 2013110600.00 release 2.6beta+ (Build: 20131106) and above within the 2.6 branch until the
+This version works with Moodle version 2013111800.00 release 2.6 (Build: 20131118) and above within the 2.6 branch until the
 next release.
 
 Please ensure that your hardware and software complies with 'Requirements' in 'Installing Moodle' on
 'docs.moodle.org/26/en/Installing_Moodle'.
 
-Supporting Columns Topics development
-=====================================
+Supporting Columns development
+==============================
 If you find Columns useful and beneficial, please consider donating to its development through the following
 PayPal link:
 
@@ -90,6 +90,9 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
+18th November 2013 Version 2.6.1
+  1.  Stable release for Moodle 2.6.
+
 14th November 2013 Version 2.6.0.1
   1.  Initial BETA code for Moodle 2.6.
   2.  Changes for 'Accessibility' based upon MDL-41252.
@@ -169,6 +172,6 @@ References
 ==========
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 14th November 2013.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 18th November 2013.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard
