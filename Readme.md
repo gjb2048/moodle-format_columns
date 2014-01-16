@@ -90,6 +90,10 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
+16th January 2014 Version 2.6.1.1
+  1.  Fixed slight coding fault in 'print_multiple_section_page' of 'renderer.php'.
+  2.  Refactored 'print_single_section_page' in 'renderer.php' for maintenance.
+
 18th November 2013 Version 2.6.1
   1.  Stable release for Moodle 2.6.
 
@@ -172,6 +176,6 @@ References
 ==========
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 18th November 2013.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 16th January 2014.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard
