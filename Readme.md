@@ -90,9 +90,10 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
-16th January 2014 Version 2.6.1.1
+4th February 2014 Version 2.6.1.1
   1.  Fixed slight coding fault in 'print_multiple_section_page' of 'renderer.php'.
   2.  Refactored 'print_single_section_page' in 'renderer.php' for maintenance.
+  3.  Refactoring for the 'Elegance' theme: https://github.com/moodleman/moodle-theme_elegance.
 
 18th November 2013 Version 2.6.1
   1.  Stable release for Moodle 2.6.
