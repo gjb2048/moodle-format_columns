@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Columns Information
  *
@@ -130,7 +129,6 @@ class format_columns extends format_base {
     public function supports_ajax() {
         $ajaxsupport = new stdClass();
         $ajaxsupport->capable = true;
-        $ajaxsupport->testedbrowsers = array('MSIE' => 8.0, 'Gecko' => 20061111, 'Opera' => 9.0, 'Safari' => 531, 'Chrome' => 6.0);
         return $ajaxsupport;
     }
 
@@ -449,7 +447,7 @@ class format_columns extends format_base {
     public function restore_columns_setting($courseid, $columns) {
         $currentcourseid = $this->courseid;  // Save for later - stack data model.        
         $this->courseid = $courseid;
-// Create data array.
+        // Create data array.
         $data = array('columns' => $columns);
 
         $this->update_course_format_options($data);

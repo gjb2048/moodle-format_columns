@@ -6,11 +6,11 @@ If you find an issue with the format, please see the 'Reporting Issues' section 
 
 Required version of Moodle
 ==========================
-This version works with Moodle version 2013111800.00 release 2.6 (Build: 20131118) and above within the 2.6 branch until the
+This version works with Moodle version 2014041700.00 release 2.7beta+ (Build: 20140417) and above within the 2.7 branch until the
 next release.
 
 Please ensure that your hardware and software complies with 'Requirements' in 'Installing Moodle' on
-'docs.moodle.org/26/en/Installing_Moodle'.
+'docs.moodle.org/27/en/Installing_Moodle'.
 
 Supporting Columns development
 ==============================
@@ -90,6 +90,10 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
+23rd April 2014 Version 2.7.0.1 - BETA
+  1.  First beta version for Moodle 2.7beta.
+  2.  Copied 'assist layout' styles from Collapsed Topics 2.6.1.4 and 2.6.1.5
+
 20th February 2014 Version 2.6.1.1
   1.  Fixed slight coding fault in 'print_multiple_section_page' of 'renderer.php'.
   2.  Refactored 'print_single_section_page' in 'renderer.php' for maintenance.
