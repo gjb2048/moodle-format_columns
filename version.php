@@ -10,7 +10,8 @@
  * @subpackage columns
  * @version    See the value of '$plugin->version' in version.php.
  * @copyright  &copy; 2012-onwards G J Barnard in respect to modifications of standard topics format.
- * @author     G J Barnard - gjbarnard at gmail dot com and {@link http://moodle.org/user/profile.php?id=442195}
+ * @author     G J Barnard - gjbarnard at gmail dot com, {@link http://about.me/gjbarnard} and
+ *                           {@link http://moodle.org/user/profile.php?id=442195}
  * @author     Based on code originally written by Dan Poltawski.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  *
@@ -30,8 +31,8 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version = 2014051200;
-$plugin->maturity = MATURITY_BETA;
-$plugin->requires = 2014042200.00; // 2.7beta+ (Build: 20140422).
+$plugin->version = 2014052000;
+$plugin->maturity = MATURITY_STABLE;
+$plugin->requires = 2014051200.00; // 2.7 (Build: 20140512).
 $plugin->component = 'format_columns';
-$plugin->release = '2.7.0.1';
+$plugin->release = '2.7.1';

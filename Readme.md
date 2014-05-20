@@ -6,7 +6,7 @@ If you find an issue with the format, please see the 'Reporting Issues' section 
 
 Required version of Moodle
 ==========================
-This version works with Moodle version 2014041700.00 release 2.7beta+ (Build: 20140417) and above within the 2.7 branch until the
+This version works with Moodle version 2014051200.00 release 2.7 (Build: 20140512) and above within the 2.7 branch until the
 next release.
 
 Please ensure that your hardware and software complies with 'Requirements' in 'Installing Moodle' on
@@ -90,6 +90,10 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
+20th May 2014 Version 2.7.1 - Stable.
+  1.  Stable release for M2.7.
+  2.  Fixed hidden sections break flow in Bootstrap V3 based themes.
+
 23rd April 2014 Version 2.7.0.1 - BETA
   1.  First beta version for Moodle 2.7beta.
   2.  Copied 'assist layout' styles from Collapsed Topics 2.6.1.4 and 2.6.1.5
@@ -182,6 +186,6 @@ References
 ==========
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 20th February 2014.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 20th May 2014.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard

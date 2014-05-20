@@ -9,7 +9,8 @@
  * @subpackage columns
  * @version    See the value of '$plugin->version' in version.php.
  * @copyright  &copy; 2012-onwards G J Barnard in respect to modifications of standard topics format.
- * @author     G J Barnard - gjbarnard at gmail dot com and {@link http://moodle.org/user/profile.php?id=442195}
+ * @author     G J Barnard - gjbarnard at gmail dot com, {@link http://about.me/gjbarnard} and
+ *                           {@link http://moodle.org/user/profile.php?id=442195}
  * @author     Based on code originally written by Dan Poltawski.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  *
@@ -101,7 +102,8 @@ if (!empty($displaysection)) {
     // Establish horizontal unordered list for horizontal columns.
     if ($cnsettings['columnorientation'] == 2) {
         echo '.course-content ul.cntopics li.section {';
-        echo 'display: inline-block;';
+        // Note: Need '!important' for Bootstrap V3 based themes as '.hidden' class now uses it when V2.3.2 did not.
+        echo 'display: inline-block !important;';
         echo 'vertical-align:top;';
         echo '}';
         echo 'body.ie7 .course-content ul.ctopics li.section {';
