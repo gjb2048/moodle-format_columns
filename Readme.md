@@ -6,18 +6,19 @@ If you find an issue with the format, please see the 'Reporting Issues' section 
 
 Required version of Moodle
 ==========================
-This version works with Moodle version 2014051200.00 release 2.7 (Build: 20140512) and above within the 2.7 branch until the
+This version works with Moodle version 2014111000.00 release 2.8 (Build: 20141110) and above within the 2.8 branch until the
 next release.
 
 Please ensure that your hardware and software complies with 'Requirements' in 'Installing Moodle' on
-'docs.moodle.org/27/en/Installing_Moodle'.
+'docs.moodle.org/28/en/Installing_Moodle'.
 
 Supporting Columns development
 ==============================
-If you find Columns useful and beneficial, please consider donating to its development through the following
-PayPal link:
+If you find Columns useful and beneficial, please consider donating by:
 
-https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=2BMYN8LKXWTS8
+PayPal - Please contact me via my 'Moodle profile' (above) for details as I am an individual and therefore am unable to have 'donation' / 'buy me now' buttons under their terms.
+
+Flattr - https://flattr.com/profile/gjb2048
 
 I develop and maintain for free and any donations to assist me in this endeavour are appreciated.
 
@@ -90,6 +91,9 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
+10th November 2014 Version 2.8.0.1 - Release Candidate
+  1.  Release candidate for Moodle 2.8 - NOT for production servers.
+
 20th May 2014 Version 2.7.1 - Stable.
   1.  Stable release for M2.7.
   2.  Fixed hidden sections break flow in Bootstrap V3 based themes.
@@ -186,6 +190,6 @@ References
 ==========
 Collapsed Topics Format - Column code migrated from - https://moodle.org/plugins/view.php?plugin=format_topcoll
 
-G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE. - 20th May 2014.
+G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE.
 Moodle profile: moodle.org/user/profile.php?id=442195.
 Web profile   : about.me/gjbarnard
