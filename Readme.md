@@ -6,17 +6,18 @@ If you find an issue with the format, please see the 'Reporting Issues' section 
 
 Required version of Moodle
 ==========================
-This version works with Moodle version 2014111000.00 release 2.8 (Build: 20141110) and above within the 2.8 branch until the
+This version works with Moodle version 2015051100.00 2.9 (Build: 20150511) and above within the 2.9 branch until the
 next release.
 
 Please ensure that your hardware and software complies with 'Requirements' in 'Installing Moodle' on
-'docs.moodle.org/28/en/Installing_Moodle'.
+'docs.moodle.org/29/en/Installing_Moodle'.
 
 Supporting Columns development
 ==============================
 If you find Columns useful and beneficial, please consider donating by:
 
-PayPal - Please contact me via my 'Moodle profile' (above) for details as I am an individual and therefore am unable to have 'donation' / 'buy me now' buttons under their terms.
+PayPal - Please contact me via my 'Moodle profile' (above) for details as I am an individual and therefore am unable to
+have 'donation' / 'buy me now' buttons under their terms.
 
 Flattr - https://flattr.com/profile/gjb2048
 
@@ -91,6 +92,9 @@ can be really useful in visualising the issue along with any files you consider 
 
 Version Information
 ===================
+Version 2.9.1.
+  1.  First version for Moodle 2.9.
+
 16th November 2014 Version 2.8.1
   1.  Stable version for Moodle 2.8.
 
