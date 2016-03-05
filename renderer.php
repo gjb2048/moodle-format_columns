@@ -35,11 +35,11 @@ require_once($CFG->dirroot . '/course/format/columns/lib.php');
 
 class format_columns_renderer extends format_section_renderer_base {
 
-    private $cncolumnwidth = 100; /* Default width in percent of the column(s). */
-    private $cncolumnpadding = 0; /* Default padding in pixels of the column(s). */
-    private $mobiletheme = false; /* As not using a mobile theme we can react to the number of columns setting. */
-    private $tablettheme = false; /* As not using a tablet theme we can react to the number of columns setting. */
-    private $courseformat; // Our course format object as defined in lib.php;
+    private $cncolumnwidth = 100; // Default width in percent of the column(s).
+    private $cncolumnpadding = 0; // Default padding in pixels of the column(s).
+    private $mobiletheme = false; // As not using a mobile theme we can react to the number of columns setting.
+    private $tablettheme = false; // As not using a tablet theme we can react to the number of columns setting.
+    private $courseformat; // Our course format object as defined in lib.php.
     private $cnsettings; // Settings for the format.
 
     /**
@@ -181,7 +181,8 @@ class format_columns_renderer extends format_section_renderer_base {
                      array('title' => get_string('markedthistopic'), 'class' => 'editing_highlight'));
             } else {
                 $url->param('marker', $section->section);
-                $controls[] = html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marker'),
+                $controls[] = html_writer::link($url, html_writer::empty_tag('img', array(
+                    'src' => $this->output->pix_url('i/marker'),
                     'class' => 'icon', 'alt' => get_string('markthistopic'))),
                     array('title' => get_string('markthistopic'), 'class' => 'editing_highlight'));
             }
@@ -228,10 +229,10 @@ class format_columns_renderer extends format_section_renderer_base {
         }
         $o .= $this->output->heading($title, 3, 'section-title');
 
-        $o.= html_writer::start_tag('div', array('class' => 'summarytext'));
-        $o.= $this->format_summary_text($section);
-        $o.= html_writer::end_tag('div');
-        $o.= $this->section_activity_summary($section, $course, null);
+        $o .= html_writer::start_tag('div', array('class' => 'summarytext'));
+        $o .= $this->format_summary_text($section);
+        $o .= html_writer::end_tag('div');
+        $o .= $this->section_activity_summary($section, $course, null);
 
         $context = context_course::instance($course->id);
         $o .= $this->section_availability_message($section,
@@ -300,7 +301,7 @@ class format_columns_renderer extends format_section_renderer_base {
             $rightcontent .= $this->section_right_content($section, $course, $onsectionpage);
             $o .= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
         }
-        $o.= html_writer::start_tag('div', array('class' => 'content'));
+        $o .= html_writer::start_tag('div', array('class' => 'content'));
 
         // When not on a section page, we display the section titles except the general section if null.
         $hasnamenotsecpg = (!$onsectionpage && ($section->section != 0 || !is_null($section->name)));
@@ -326,7 +327,7 @@ class format_columns_renderer extends format_section_renderer_base {
 
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
             $url = new moodle_url('/course/editsection.php', array('id' => $section->id, 'sr' => $sectionreturn));
-            $o.= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),
+            $o .= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),
                 'class' => 'iconsmall edit', 'alt' => get_string('edit'))), array('title' => get_string('editsummary')));
         }
         $o .= html_writer::end_tag('div');
@@ -345,20 +346,6 @@ class format_columns_renderer extends format_section_renderer_base {
         $o = html_writer::end_tag('li');
 
         return $o;
-    }
-
-    /**
-     * Output the html for a single section page.
-     *
-     * @param stdClass $course The course entry from DB.
-     * @param array $sections The course_sections entries from the DB.
-     * @param array $mods used for print_section().
-     * @param array $modnames used for print_section().
-     * @param array $modnamesused used for print_section().
-     * @param int $displaysection The section number in the course which is being displayed.
-     */
-    public function print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection) {
-        return parent::print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection);
     }
 
     /**
@@ -432,8 +419,8 @@ class format_columns_renderer extends format_section_renderer_base {
             } else {
                 $this->cncolumnwidth -= 0.2;
             }
-            $this->cncolumnpadding = 0; // px
-        } elseif ($this->cnsettings['columns'] < 1) {
+            $this->cncolumnpadding = 0; // In px.
+        } else if ($this->cnsettings['columns'] < 1) {
             // Default in cnconfig.php (and reset in database) or database has been changed incorrectly.
             $this->cnsettings['columns'] = 1;
 
@@ -450,13 +437,13 @@ class format_columns_renderer extends format_section_renderer_base {
         while ($section <= $course->numsections) {
             $thissection = $modinfo->get_section_info($section);
 
-            // Show the section if the user is permitted to access it, OR if it's not available
-            // but showavailability is turned on
+            /* Show the section if the user is permitted to access it, OR if it's not available
+               but showavailability is turned on. */
             $showsection = $thissection->uservisible ||
-                    ($thissection->visible && !$thissection->available && $thissection->showavailability);
+               ($thissection->visible && !$thissection->available && $thissection->showavailability);
             if (!$showsection) {
-                // Hidden section message is overridden by 'unavailable' control
-                // (showavailability option).
+                /* Hidden section message is overridden by 'unavailable' control
+                   (showavailability option). */
                 if (!$course->hiddensections && $thissection->available) {
                     echo $this->section_hidden($section);
                 }
@@ -476,14 +463,14 @@ class format_columns_renderer extends format_section_renderer_base {
                 }
             }
 
-
             if ($this->cnsettings['columnorientation'] == 1) {  // Only break columns in vertical mode.
                 if (($canbreak == false) && ($showsection == true)) {
                     $canbreak = true;
                     $columnbreakpoint = ($shownsectioncount + ($numsections / $this->cnsettings['columns'])) - 1;
                 }
 
-                if (($canbreak == true) && ($shownsectioncount >= $columnbreakpoint) && ($columncount < $this->cnsettings['columns'])) {
+                if (($canbreak == true) &&
+                   ($shownsectioncount >= $columnbreakpoint) && ($columncount < $this->cnsettings['columns'])) {
                     echo $this->end_section_list();
                     echo $this->start_columns_section_list();
                     $columncount++;
@@ -499,7 +486,7 @@ class format_columns_renderer extends format_section_renderer_base {
             // Print stealth sections if present.
             foreach ($modinfo->get_section_info_all() as $section => $thissection) {
                 if ($section <= $course->numsections or empty($modinfo->sections[$section])) {
-                    // this is not stealth section or it is empty
+                    // This is not stealth section or it is empty.
                     continue;
                 }
                 echo $this->stealth_section_header($section);

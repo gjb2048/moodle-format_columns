@@ -60,7 +60,7 @@ $string['resetallcolumns'] = 'Reset columns for all Columns courses';
 // Temporary until MDL-34917 in core.
 $string['maincoursepage'] = 'Main course page';
 
-// Help
+// Help.
 $string['resetcolumns_help'] = 'Resets the columns to the default values in "/course/format/columns/cnconfig.php" so it will be the same as a course the first time it is in the Columns format.';
 $string['resetallcolumns_help'] = 'Resets the columns to the default values in "/course/format/columns/cnconfig.php" for all courses so it will be the same as a course the first time it is in the Columns format.';
 $string['setcolumns_help'] = 'How many columns to use.';
@@ -88,4 +88,3 @@ $string['defaultcolumnorientation'] = 'Default column orientation';
 $string['defaultcolumnorientation_desc'] = "The default column orientation: Vertical or Horizontal.";
 // Capabilities.
 $string['columns:changecolumns'] = 'Change or reset the columns';
-?>

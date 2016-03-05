@@ -64,7 +64,7 @@ class format_columns extends format_base {
     public function get_section_name($section) {
         $course = $this->get_course();
         $section = $this->get_section($section);
-        // We can't add a node without any text
+        // We can't add a node without any text.
         if ((string) $section->name !== '') {
             return format_string($section->name, true, array('context' => context_course::instance($course->id)));
         } else if ($section->section == 0) {
@@ -246,7 +246,8 @@ class format_columns extends format_base {
                     ),
                     'help' => 'coursedisplay',
                     'help_component' => 'moodle',
-                ));
+                )
+            );
             if (has_capability('format/columns:changecolumns', $coursecontext)) {
                 $courseformatoptionsedit['columns'] = array(
                     'label' => new lang_string('setcolumns', 'format_columns'),
@@ -266,7 +267,7 @@ class format_columns extends format_base {
                     'help_component' => 'format_columns',
                     'element_type' => 'select',
                     'element_attributes' => array(
-                        array(1 => get_string('columnvertical', 'format_columns'), 
+                        array(1 => get_string('columnvertical', 'format_columns'),
                               2 => get_string('columnhorizontal', 'format_columns')) // Default.
                     )
                 );
