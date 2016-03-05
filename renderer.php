@@ -1,4 +1,18 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Columns Information
@@ -14,18 +28,6 @@
  * @author     Based on code originally written by Dan Poltawski.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 defined('MOODLE_INTERNAL') || die();
 require_once($CFG->dirroot . '/course/format/renderer.php');
@@ -50,8 +52,9 @@ class format_columns_renderer extends format_section_renderer_base {
         parent::__construct($page, $target);
         $this->courseformat = course_get_format($page->course); // Needed for columns settings retrieval.
 
-        // Since format_columns_renderer::section_edit_controls() only displays the 'Set current section' control when editing mode is on
-        // we need to be sure that the link 'Turn editing mode on' is available for a user who does not have any other managing capability.
+        /* Since format_columns_renderer::section_edit_controls() only displays the 'Set current section' control when editing
+           mode is on we need to be sure that the link 'Turn editing mode on' is available for a user who does not have any
+           other managing capability. */
         $page->set_other_editing_capability('moodle/course:setcurrentsection');
     }
 
@@ -172,12 +175,15 @@ class format_columns_renderer extends format_section_renderer_base {
         if (has_capability('moodle/course:setcurrentsection', $coursecontext)) {
             if ($course->marker == $section->section) {  // Show the "light globe" on/off.
                 $url->param('marker', 0);
-                $controls[] = html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marked'),
-                                    'class' => 'icon ', 'alt' => get_string('markedthistopic'))), array('title' => get_string('markedthistopic'), 'class' => 'editing_highlight'));
+                $controls[] = html_writer::link($url, html_writer::empty_tag('img', array(
+                    'src' => $this->output->pix_url('i/marked'),
+                    'class' => 'icon ', 'alt' => get_string('markedthistopic'))),
+                     array('title' => get_string('markedthistopic'), 'class' => 'editing_highlight'));
             } else {
                 $url->param('marker', $section->section);
                 $controls[] = html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('i/marker'),
-                                    'class' => 'icon', 'alt' => get_string('markthistopic'))), array('title' => get_string('markthistopic'), 'class' => 'editing_highlight'));
+                    'class' => 'icon', 'alt' => get_string('markthistopic'))),
+                    array('title' => get_string('markthistopic'), 'class' => 'editing_highlight'));
             }
         }
 
@@ -196,7 +202,7 @@ class format_columns_renderer extends format_section_renderer_base {
         $classattr = 'section main section-summary clearfix';
         $linkclasses = '';
 
-        // If section is hidden then display grey section link
+        // If section is hidden then display grey section link.
         if (!$section->visible) {
             $classattr .= ' hidden';
             $linkclasses .= ' dimmed_text';
@@ -206,7 +212,7 @@ class format_columns_renderer extends format_section_renderer_base {
 
         $o = '';
         $title = get_section_name($course, $section);
-        $liattributes = array('id' => 'section-'.$section->section, 'class' => $classattr, 'role'=>'region', 'aria-label'=> $title);
+        $liattributes = array('id' => 'section-'.$section->section, 'class' => $classattr, 'role' => 'region', 'aria-label' => $title);
         if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
             $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
         }
@@ -218,7 +224,7 @@ class format_columns_renderer extends format_section_renderer_base {
 
         if ($section->uservisible) {
             $title = html_writer::tag('a', $title,
-                    array('href' => course_get_url($course, $section->section), 'class' => $linkclasses));
+               array('href' => course_get_url($course, $section->section), 'class' => $linkclasses));
         }
         $o .= $this->output->heading($title, 3, 'section-title');
 
@@ -229,7 +235,7 @@ class format_columns_renderer extends format_section_renderer_base {
 
         $context = context_course::instance($course->id);
         $o .= $this->section_availability_message($section,
-                has_capability('moodle/course:viewhiddensections', $context));
+            has_capability('moodle/course:viewhiddensections', $context));
 
         $o .= html_writer::end_tag('div');
         $o .= html_writer::end_tag('li');
@@ -285,8 +291,10 @@ class format_columns_renderer extends format_section_renderer_base {
             if (($section->section != 0) && $PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
                 $url = new moodle_url('/course/editsection.php', array('id' => $section->id, 'sr' => $sectionreturn));
 
-                $rightcontent .= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),
-                                    'class' => 'iconsmall edit cneditsection', 'alt' => get_string('edit'))), array('title' => get_string('editsummary'), 'class' => 'cneditsection'));
+                $rightcontent .= html_writer::link($url, html_writer::empty_tag('img', array(
+                    'src' => $this->output->pix_url('t/edit'),
+                    'class' => 'iconsmall edit cneditsection', 'alt' => get_string('edit'))),
+                     array('title' => get_string('editsummary'), 'class' => 'cneditsection'));
                 $rightcontent .= html_writer::empty_tag('br');
             }
             $rightcontent .= $this->section_right_content($section, $course, $onsectionpage);
@@ -294,7 +302,7 @@ class format_columns_renderer extends format_section_renderer_base {
         }
         $o.= html_writer::start_tag('div', array('class' => 'content'));
 
-        // When not on a section page, we display the section titles except the general section if null
+        // When not on a section page, we display the section titles except the general section if null.
         $hasnamenotsecpg = (!$onsectionpage && ($section->section != 0 || !is_null($section->name)));
 
         if (($onsectionpage == false) && ($section->section != 0)) {
@@ -319,7 +327,7 @@ class format_columns_renderer extends format_section_renderer_base {
         if ($PAGE->user_is_editing() && has_capability('moodle/course:update', $context)) {
             $url = new moodle_url('/course/editsection.php', array('id' => $section->id, 'sr' => $sectionreturn));
             $o.= html_writer::link($url, html_writer::empty_tag('img', array('src' => $this->output->pix_url('t/edit'),
-                                'class' => 'iconsmall edit', 'alt' => get_string('edit'))), array('title' => get_string('editsummary')));
+                'class' => 'iconsmall edit', 'alt' => get_string('edit'))), array('title' => get_string('editsummary')));
         }
         $o .= html_writer::end_tag('div');
 
@@ -329,7 +337,7 @@ class format_columns_renderer extends format_section_renderer_base {
     }
 
     /**
-     * Generate the display of the footer part of a section
+     * Generate the display of the footer part of a section.
      *
      * @return string HTML to output.
      */
@@ -342,25 +350,25 @@ class format_columns_renderer extends format_section_renderer_base {
     /**
      * Output the html for a single section page.
      *
-     * @param stdClass $course The course entry from DB
-     * @param array $sections The course_sections entries from the DB
-     * @param array $mods used for print_section()
-     * @param array $modnames used for print_section()
-     * @param array $modnamesused used for print_section()
-     * @param int $displaysection The section number in the course which is being displayed
+     * @param stdClass $course The course entry from DB.
+     * @param array $sections The course_sections entries from the DB.
+     * @param array $mods used for print_section().
+     * @param array $modnames used for print_section().
+     * @param array $modnamesused used for print_section().
+     * @param int $displaysection The section number in the course which is being displayed.
      */
     public function print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection) {
         return parent::print_single_section_page($course, $sections, $mods, $modnames, $modnamesused, $displaysection);
     }
 
     /**
-     * Output the html for a multiple section page
+     * Output the html for a multiple section page.
      *
-     * @param stdClass $course The course entry from DB
-     * @param array $sections The course_sections entries from the DB
-     * @param array $mods used for print_section()
-     * @param array $modnames used for print_section()
-     * @param array $modnamesused used for print_section()
+     * @param stdClass $course The course entry from DB.
+     * @param array $sections The course_sections entries from the DB.
+     * @param array $mods used for print_section().
+     * @param array $modnames used for print_section().
+     * @param array $modnamesused used for print_section().
      */
     public function print_multiple_section_page($course, $sections, $mods, $modnames, $modnamesused) {
         global $PAGE;
@@ -505,20 +513,20 @@ class format_columns_renderer extends format_section_renderer_base {
 
             // Increase number of sections.
             $straddsection = get_string('increasesections', 'moodle');
-            $url = new moodle_url('/course/changenumsections.php',
-                            array('courseid' => $course->id,
-                                'increase' => true,
-                                'sesskey' => sesskey()));
+            $url = new moodle_url('/course/changenumsections.php', array(
+                'courseid' => $course->id,
+                'increase' => true,
+                'sesskey' => sesskey()));
             $icon = $this->output->pix_icon('t/switch_plus', $straddsection);
             echo html_writer::link($url, $icon . get_accesshide($straddsection), array('class' => 'increase-sections'));
 
             if ($course->numsections > 0) {
                 // Reduce number of sections sections.
                 $strremovesection = get_string('reducesections', 'moodle');
-                $url = new moodle_url('/course/changenumsections.php',
-                                array('courseid' => $course->id,
-                                    'increase' => false,
-                                    'sesskey' => sesskey()));
+                $url = new moodle_url('/course/changenumsections.php', array(
+                    'courseid' => $course->id,
+                    'increase' => false,
+                    'sesskey' => sesskey()));
                 $icon = $this->output->pix_icon('t/switch_minus', $strremovesection);
                 echo html_writer::link($url, $icon . get_accesshide($strremovesection), array('class' => 'reduce-sections'));
             }

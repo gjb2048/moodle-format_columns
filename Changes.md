@@ -3,6 +3,7 @@ Version Information
 Version 3.0.1
   1. First version for Moodle 3.0.
   2. Added TravisCI support.
+  3. Implement MDL-26226.
 
 Version 2.9.1.1
   1. Update readme.

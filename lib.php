@@ -1,4 +1,19 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
+
 /**
  * Columns Information
  *
@@ -13,18 +28,6 @@
  * @author     Based on code originally written by Dan Poltawski.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once($CFG->dirroot . '/course/format/lib.php'); // For format_base.
 
@@ -108,7 +111,7 @@ class format_columns extends format_base {
             if ($sectionno != 0 && $usercoursedisplay == COURSE_DISPLAY_MULTIPAGE) {
                 $url->param('section', $sectionno);
             } else {
-                if (!empty($options['navigation'])) {
+                if (empty($CFG->linkcoursesections) && !empty($options['navigation'])) {
                     return null;
                 }
                 $url->set_anchor('section-' . $sectionno);
@@ -139,7 +142,7 @@ class format_columns extends format_base {
      *
      * @return array This will be passed in ajax respose
      */
-    function ajax_section_move() {
+    public function ajax_section_move() {
         global $PAGE;
         $titles = array();
         $course = $this->get_course();
@@ -251,10 +254,10 @@ class format_columns extends format_base {
                     'help_component' => 'format_columns',
                     'element_type' => 'select',
                     'element_attributes' => array(
-                        array(1 => get_string('one', 'format_columns'), // Default
-                            2 => get_string('two', 'format_columns'), // Two   
-                            3 => get_string('three', 'format_columns'), // Three
-                            4 => get_string('four', 'format_columns')) // Four
+                        array(1 => get_string('one', 'format_columns'), // Default.
+                            2 => get_string('two', 'format_columns'), // Two.
+                            3 => get_string('three', 'format_columns'), // Three.
+                            4 => get_string('four', 'format_columns')) // Four.
                     )
                 );
                 $courseformatoptionsedit['columnorientation'] = array(
@@ -264,14 +267,14 @@ class format_columns extends format_base {
                     'element_type' => 'select',
                     'element_attributes' => array(
                         array(1 => get_string('columnvertical', 'format_columns'), 
-                              2 => get_string('columnhorizontal', 'format_columns')) // Default 
+                              2 => get_string('columnhorizontal', 'format_columns')) // Default.
                     )
                 );
             } else {
-                $courseformatoptionsedit['columns'] =
-                    array('label' => new lang_string('setcolumns', 'format_columns'), 'element_type' => 'hidden');
-                $courseformatoptionsedit['columnorientation'] =
-                    array('label' => new lang_string('setcolumnorientation', 'format_columns'), 'element_type' => 'hidden');
+                $courseformatoptionsedit['columns'] = array(
+                    'label' => new lang_string('setcolumns', 'format_columns'), 'element_type' => 'hidden');
+                $courseformatoptionsedit['columnorientation'] = array(
+                    'label' => new lang_string('setcolumnorientation', 'format_columns'), 'element_type' => 'hidden');
             }
             $courseformatoptions = array_merge_recursive($courseformatoptions, $courseformatoptionsedit);
         }
@@ -293,19 +296,17 @@ class format_columns extends format_base {
 
         if ($forsection == false) {
             global $COURSE, $USER;
-            /*
-             Increase the number of sections combo box values if the user has increased the number of sections
-             using the icon on the course page beyond course 'maxsections' or course 'maxsections' has been
-             reduced below the number of sections already set for the course on the site administration course
-             defaults page.  This is so that the number of sections is not reduced leaving unintended orphaned
-             activities / resources.
-             */
+            /* Increase the number of sections combo box values if the user has increased the number of sections
+               using the icon on the course page beyond course 'maxsections' or course 'maxsections' has been
+               reduced below the number of sections already set for the course on the site administration course
+               defaults page.  This is so that the number of sections is not reduced leaving unintended orphaned
+               activities / resources. */
             $maxsections = get_config('moodlecourse', 'maxsections');
             $numsections = $mform->getElementValue('numsections');
             $numsections = $numsections[0];
             if ($numsections > $maxsections) {
                 $element = $mform->getElement('numsections');
-                for ($i = $maxsections+1; $i <= $numsections; $i++) {
+                for ($i = $maxsections + 1; $i <= $numsections; $i++) {
                     $element->addOption("$i", $i);
                 }
             }
@@ -326,7 +327,8 @@ class format_columns extends format_base {
             }
 
             if (is_siteadmin($USER)) {
-                $elements[] = $mform->addElement('checkbox', 'resetallcolumns', get_string('resetallcolumns', 'format_columns'), false);
+                $elements[] = $mform->addElement('checkbox', 'resetallcolumns',
+                    get_string('resetallcolumns', 'format_columns'), false);
                 $mform->addHelpButton('resetallcolumns', 'resetallcolumns', 'format_columns', '', true);
             }
         }
@@ -349,9 +351,9 @@ class format_columns extends format_base {
      */
     public function update_course_format_options($data, $oldcourse = null) {
         global $DB; // MDL-37976.
-        // Notes: Using 'unset' to really ensure that the reset form elements never get into the database.
-        //        This has to be done here so that the reset occurs after we have done updates such that the
-        //        reset itself is not seen as an update.
+        /* Notes: Using 'unset' to really ensure that the reset form elements never get into the database.
+                  This has to be done here so that the reset occurs after we have done updates such that the
+                  reset itself is not seen as an update. */
         $resetcolumns = false;
         $resetallcolumns = false;
         if (isset($data->resetcolumns) == true) {
@@ -372,13 +374,13 @@ class format_columns extends format_base {
                     if (array_key_exists($key, $oldcourse)) {
                         $data[$key] = $oldcourse[$key];
                     } else if ($key === 'numsections') {
-                        // If previous format does not have the field 'numsections'
-                        // and $data['numsections'] is not set,
-                        // we fill it with the maximum section number from the DB
+                        /* If previous format does not have the field 'numsections'
+                           and $data['numsections'] is not set,
+                           we fill it with the maximum section number from the DB. */
                         $maxsection = $DB->get_field_sql('SELECT max(section) from {course_sections}
                             WHERE course = ?', array($this->courseid));
                         if ($maxsection) {
-                            // If there are no sections, or just default 0-section, 'numsections' will be set to default
+                            // If there are no sections, or just default 0-section, 'numsections' will be set to default.
                             $data['numsections'] = $maxsection;
                         }
                     }
@@ -410,9 +412,10 @@ class format_columns extends format_base {
 
         $currentcourseid = 0;
         if ($courseid == 0) {
-            $records = $DB->get_records('course_format_options', array('format' => $this->format), '', 'id,courseid');
+            $records = $DB->get_records('course_format_options', array('format' => $this->format), '', 'id, courseid');
         } else {
-            $records = $DB->get_records('course_format_options', array('courseid' => $courseid, 'format' => $this->format), '', 'id,courseid');
+            $records = $DB->get_records('course_format_options', array(
+                'courseid' => $courseid, 'format' => $this->format), '', 'id, courseid');
         }
 
         $resetallifall = ((is_siteadmin($USER)) || ($courseid != 0)); // Will be true if reset all capability or a single course.
@@ -445,7 +448,7 @@ class format_columns extends format_base {
      * @param int $columns The columns to use, see cnconfig.php.
      */
     public function restore_columns_setting($courseid, $columns) {
-        $currentcourseid = $this->courseid;  // Save for later - stack data model.        
+        $currentcourseid = $this->courseid;  // Save for later - stack data model.
         $this->courseid = $courseid;
         // Create data array.
         $data = array('columns' => $columns);
@@ -465,7 +468,6 @@ class format_columns extends format_base {
 
         $this->update_course_format_options($data);
     }
-
 }
 
 /**

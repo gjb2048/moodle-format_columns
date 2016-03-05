@@ -1,4 +1,18 @@
 <?php
+// This file is part of Moodle - http://moodle.org/
+//
+// Moodle is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Moodle is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
  * Columns Information
@@ -14,18 +28,6 @@
  * @author     Based on code originally written by Dan Poltawski.
  * @license    http://www.gnu.org/copyleft/gpl.html GNU Public License
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
-
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
-
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 require_once($CFG->dirroot . '/course/format/lib.php');
 require_once($CFG->dirroot . '/course/format/columns/lib.php');
@@ -47,13 +49,14 @@ function xmldb_format_columns_upgrade($oldversion = 0) {
                 // Check that the course still exists - CONTRIB-4065...
                 if ($DB->record_exists('course', array('id' => $record->courseid))) {
                     $courseformat = course_get_format($record->courseid);  // In '/course/format/lib.php'.
-                    // Only update if the current format is 'columns' as we must have an instance of 'format_columns' (in 'lib.php')
-                    // returned by the above.  Thanks to Marina Glancy for this :).
-                    // If there are entries that existed for courses that were originally columns, then they will be lost.  However
-                    // the code copes with this through the employment of defaults and I dont think the underlying code desires entries
-                    // in the course_format_settings table for courses of a format that belong to another format.
+                    /* Only update if the current format is 'columns' as we must have an instance of 'format_columns'
+                       (in 'lib.php') returned by the above.  Thanks to Marina Glancy for this :).
+                       If there are entries that existed for courses that were originally columns, then they will be lost.  However
+                       the code copes with this through the employment of defaults and I dont think the underlying code desires
+                       entries in the course_format_settings table for courses of a format that belong to another format. */
                     if ($courseformat->get_format() == 'columns') {
-                        $courseformat->restore_columns_setting($record->courseid, $record->columns); // In '/course/format/columns/lib.php'.
+                        // In '/course/format/columns/lib.php'.
+                        $courseformat->restore_columns_setting($record->courseid, $record->columns);
                     }
                 }
             }
