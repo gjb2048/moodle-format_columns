@@ -53,7 +53,7 @@ class restore_format_columns_plugin extends restore_format_plugin {
         $elepath = $this->get_pathfor('/');
         $paths[] = new restore_path_element($elename, $elepath);
 
-        return $paths; // And we return the interesting paths
+        return $paths; // And we return the interesting paths.
     }
 
     /**
