@@ -41,6 +41,8 @@ class format_columns_renderer extends format_section_renderer_base {
     private $tablettheme = false; // As not using a tablet theme we can react to the number of columns setting.
     private $courseformat; // Our course format object as defined in lib.php.
     private $cnsettings; // Settings for the format.
+    private $formatresponsive;
+    private $rtl = false;
 
     /**
      * Constructor method, calls the parent constructor - MDL-21097
@@ -56,6 +58,10 @@ class format_columns_renderer extends format_section_renderer_base {
            mode is on we need to be sure that the link 'Turn editing mode on' is available for a user who does not have any
            other managing capability. */
         $page->set_other_editing_capability('moodle/course:setcurrentsection');
+
+        $this->formatresponsive = get_config('format_columns', 'formatresponsive');
+
+        $this->rtl = right_to_left();
     }
 
     /**
@@ -73,18 +79,27 @@ class format_columns_renderer extends format_section_renderer_base {
      */
     protected function start_columns_section_list() {
         $classes = 'cntopics topics';
-        $style = '';
-        if ($this->cnsettings['columnorientation'] == 1) {
-            $style .= 'width:' . $this->cncolumnwidth . '%;';  // Vertical columns.
+        $attributes = array();
+        if ($this->formatresponsive) {
+            $style = '';
+            if ($this->cnsettings['columnorientation'] == 1) { // Vertical columns.
+                $style .= 'width:' . $this->cncolumnwidth . '%;';
+            } else {
+                $style .= 'width: 100%;';  // Horizontal columns.
+            }
+            if ($this->mobiletheme === false) {
+                $classes .= ' cnlayout';
+            }
+            $style .= ' padding-left: ' . $this->cncolumnpadding . 'px; padding-right: ' . $this->cncolumnpadding . 'px;';
+            $attributes['style'] = $style;
         } else {
-            $style .= 'width:100%;';  // Horizontal columns.
+            if ($this->cnsettings['columnorientation'] == 1) { // Vertical columns.
+                $classes .= ' ' . $this->get_column_class($this->cnsettings['columns']);
+            } else {
+                $classes .= ' ' . $this->get_row_class();
+            }
         }
-        if ($this->mobiletheme === false) {
-            $classes .= ' cnlayout';
-        }
-        $style .= ' padding:' . $this->cncolumnpadding . 'px;';
-        $attributes = array('class' => $classes);
-        $attributes['style'] = $style;
+        $attributes['class'] = $classes;
         return html_writer::start_tag('ul', $attributes);
     }
 
@@ -237,7 +252,7 @@ class format_columns_renderer extends format_section_renderer_base {
         $o = '';
         $title = get_section_name($course, $section);
         $liattributes = array('id' => 'section-'.$section->section, 'class' => $classattr, 'role' => 'region', 'aria-label' => $title);
-        if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
+        if (($this->formatresponsive) && ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
             $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
         }
         $o .= html_writer::start_tag('li', $liattributes);
@@ -293,13 +308,17 @@ class format_columns_renderer extends format_section_renderer_base {
             }
         }
 
+        if ((!$this->formatresponsive) && ($section->section != 0) &&
+            ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
+            $sectionstyle .= ' ' . $this->get_column_class($this->cnsettings['columns']);
+        }
         $liattributes = array(
             'id' => 'section-' . $section->section,
             'class' => 'section main clearfix' . $sectionstyle,
             'role' => 'region',
             'aria-label' => $this->courseformat->get_section_name($section)
         );
-        if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
+        if (($this->formatresponsive) && ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
             $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
         }
         $o .= html_writer::start_tag('li', $liattributes);
@@ -372,6 +391,92 @@ class format_columns_renderer extends format_section_renderer_base {
     }
 
     /**
+     * Generate the header html of a stealth section.
+     *
+     * @param int $sectionno The section number in the coruse which is being dsiplayed.
+     * @return string HTML to output.
+     */
+    protected function stealth_section_header($sectionno) {
+        $o = '';
+        $sectionstyle = '';
+        $course = $this->courseformat->get_course();
+        // Horizontal column layout.
+        if ((!$this->formatresponsive) && ($sectionno != 0) && ($this->cnsettings['columnorientation'] == 2)) {
+            $sectionstyle .= ' ' . $this->get_column_class($this->cnsettings['columns']);
+        }
+        $liattributes = array(
+            'id' => 'section-' . $sectionno,
+            'class' => 'section main clearfix orphaned hidden' . $sectionstyle,
+            'role' => 'region',
+            'aria-label' => $this->courseformat->get_section_name($course, $sectionno, false)
+        );
+        if (($this->formatresponsive) && ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
+            $liattributes['style'] = 'width: ' . $this->cncolumnwidth . '%;';
+        }
+        $o .= html_writer::start_tag('li', $liattributes);
+        $o .= html_writer::tag('div', '', array('class' => 'left side'));
+        $section = $this->courseformat->get_section($sectionno);
+        $rightcontent = $this->section_right_content($section, $course, false);
+        $o .= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
+        $o .= html_writer::start_tag('div', array('class' => 'content'));
+        $o .= $this->output->heading(get_string('orphanedactivitiesinsectionno', '', $sectionno), 3, 'sectionname');
+        return $o;
+    }
+
+    /**
+     * Generate the html for a hidden section.
+     *
+     * @param stdClass $section The section in the course which is being displayed.
+     * @param int|stdClass $courseorid The course to get the section name for (object or just course id).
+     * @return string HTML to output.
+     */
+    protected function section_hidden($section, $courseorid = null) {
+        $o = '';
+        $course = $this->courseformat->get_course();
+        $sectionstyle = 'section main clearfix hidden';
+        if ((!$this->formatresponsive) && ($this->tcsettings['columnorientation'] == 2)) { // Horizontal column layout.
+            $sectionstyle .= ' ' . $this->get_column_class($this->cnsettings['columns']);
+        }
+        $liattributes = array(
+            'id' => 'section-' . $section->section,
+            'class' => $sectionstyle,
+            'role' => 'region',
+            'aria-label' => $this->courseformat->get_section_name($course, $section, false)
+        );
+        if (($this->formatresponsive) && ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
+            $liattributes['style'] = 'width: ' . $this->cncolumnwidth . '%;';
+        }
+
+        $o .= html_writer::start_tag('li', $liattributes);
+        if ((($this->mobiletheme === false) && ($this->tablettheme === false)) || ($this->userisediting)) {
+            $leftcontent = $this->section_left_content($section, $course, false);
+            $rightcontent = $this->section_right_content($section, $course, false);
+
+            if ($this->rtl) {
+                // Swap content.
+                $o .= html_writer::tag('div', $leftcontent, array('class' => 'right side'));
+                $o .= html_writer::tag('div', $rightcontent, array('class' => 'left side'));
+            } else {
+                $o .= html_writer::tag('div', $leftcontent, array('class' => 'left side'));
+                $o .= html_writer::tag('div', $rightcontent, array('class' => 'right side'));
+            }
+
+        }
+
+        $o .= html_writer::start_tag('div', array('class' => 'content sectionhidden'));
+
+        $title = get_string('notavailable');
+        if ((($this->mobiletheme === false) && ($this->tablettheme === false)) || ($this->userisediting)) {
+            $o .= $this->output->heading($title, 3, 'section-title');
+        } else {
+            $o .= html_writer::tag('h3', $title); // Moodle H3's look bad on mobile / tablet so use plain.
+        }
+        $o .= html_writer::end_tag('div');
+        $o .= html_writer::end_tag('li');
+        return $o;
+    }
+
+    /**
      * Output the html for a multiple section page.
      *
      * @param stdClass $course The course entry from DB.
@@ -401,7 +506,9 @@ class format_columns_renderer extends format_section_renderer_base {
         echo $this->course_activity_clipboard($course, 0);
 
         // Now the list of sections..
-        $this->cncolumnwidth = 100; // Reset to default.
+        if ($this->formatresponsive) {
+            $this->cncolumnwidth = 100; // Reset to default.
+        }
         echo $this->start_section_list();
 
         $sections = $modinfo->get_section_info_all();
@@ -436,13 +543,15 @@ class format_columns_renderer extends format_section_renderer_base {
                 $this->cnsettings['columns'] = 2;
             }
 
-            $this->cncolumnwidth = 100 / $this->cnsettings['columns'];
-            if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
-                $this->cncolumnwidth -= 1;
-            } else {
-                $this->cncolumnwidth -= 0.2;
+            if ($this->formatresponsive) {
+                $this->cncolumnwidth = 100 / $this->cnsettings['columns'];
+                if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
+                    $this->cncolumnwidth -= 1;
+                } else {
+                    $this->cncolumnwidth -= 0.2;
+                }
+                $this->cncolumnpadding = 0; // In px.
             }
-            $this->cncolumnpadding = 0; // In px.
         } else if ($this->cnsettings['columns'] < 1) {
             // Default in cnconfig.php (and reset in database) or database has been changed incorrectly.
             $this->cnsettings['columns'] = 1;
@@ -451,6 +560,9 @@ class format_columns_renderer extends format_section_renderer_base {
             $this->courseformat->update_columns_columns_setting($this->cnsettings['columns']);
         }
         echo $this->end_section_list();
+        if ((!$this->formatresponsive) && ($this->cnsettings['columnorientation'] == 1)) { // Vertical columns.
+            echo html_writer::start_tag('div', array('class' => $this->get_row_class()));
+        }
         echo $this->start_columns_section_list();
 
         $canbreak = false; // Once the first section is shown we can decide if we break on another column.
@@ -486,19 +598,22 @@ class format_columns_renderer extends format_section_renderer_base {
                 }
             }
 
-            if ($this->cnsettings['columnorientation'] == 1) {  // Only break columns in vertical mode.
-                if (($canbreak == false) && ($showsection == true)) {
-                    $canbreak = true;
-                    $columnbreakpoint = ($shownsectioncount + ($numsections / $this->cnsettings['columns'])) - 1;
-                }
+            // Only break in non-mobile themes or using a reponsive theme.
+            if ((!$this->formatresponsive) || ($this->mobiletheme === false)) {
+                if ($this->cnsettings['columnorientation'] == 1) {  // Only break columns in vertical mode.
+                    if (($canbreak == false) && ($showsection == true)) {
+                        $canbreak = true;
+                        $columnbreakpoint = ($shownsectioncount + ($numsections / $this->cnsettings['columns'])) - 1;
+                    }
 
-                if (($canbreak == true) &&
-                   ($shownsectioncount >= $columnbreakpoint) && ($columncount < $this->cnsettings['columns'])) {
-                    echo $this->end_section_list();
-                    echo $this->start_columns_section_list();
-                    $columncount++;
-                    // Next breakpoint is...
-                    $columnbreakpoint += $numsections / $this->cnsettings['columns'];
+                    if (($canbreak == true) &&
+                       ($shownsectioncount >= $columnbreakpoint) && ($columncount < $this->cnsettings['columns'])) {
+                        echo $this->end_section_list();
+                        echo $this->start_columns_section_list();
+                        $columncount++;
+                        // Next breakpoint is...
+                        $columnbreakpoint += $numsections / $this->cnsettings['columns'];
+                    }
                 }
             }
             unset($sections[$section]);
@@ -518,6 +633,9 @@ class format_columns_renderer extends format_section_renderer_base {
             }
 
             echo $this->end_section_list();
+            if ((!$this->formatresponsive) && ($this->cnsettings['columnorientation'] == 1)) { // Vertical columns.
+                echo html_writer::end_tag('div');
+            }
 
             echo html_writer::start_tag('div', array('id' => 'changenumsections', 'class' => 'mdl-right'));
 
@@ -544,6 +662,9 @@ class format_columns_renderer extends format_section_renderer_base {
             echo html_writer::end_tag('div');
         } else {
             echo $this->end_section_list();
+            if ((!$this->formatresponsive) && ($this->cnsettings['columnorientation'] == 1)) { // Vertical columns.
+                echo html_writer::end_tag('div');
+            }
         }
     }
 
@@ -560,5 +681,19 @@ class format_columns_renderer extends format_section_renderer_base {
                 $this->tablettheme = false;
             break;
         }
+    }
+
+    protected function get_row_class() {
+        return 'row-fluid';
+    }
+
+    protected function get_column_class($columns) {
+        $colclasses = array(1 => 'span12', 2 => 'span6', 3 => 'span4', 4 => 'span3');
+
+        return $colclasses[$columns];
+    }
+
+    public function get_format_responsive() {
+        return $this->formatresponsive;
     }
 }

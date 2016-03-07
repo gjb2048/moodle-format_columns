@@ -73,4 +73,14 @@ if ($ADMIN->fulltree) {
     );
     $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 
+    /* Format responsive.  Turn on to support a non responsive theme theme. */
+    $name = 'format_columns/formatresponsive';
+    $title = get_string('formatresponsive', 'format_columns');
+    $description = get_string('formatresponsive_desc', 'format_columns');
+    $default = 0;
+    $choices = array(
+        0 => new lang_string('off', 'format_columns'), // Off.
+        1 => new lang_string('on', 'format_columns')   // On.
+    );
+    $settings->add(new admin_setting_configselect($name, $title, $description, $default, $choices));
 }

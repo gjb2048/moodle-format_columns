@@ -103,7 +103,7 @@ if (!empty($displaysection)) {
     }
 
     // Establish horizontal unordered list for horizontal columns.
-    if ($cnsettings['columnorientation'] == 2) {
+    if (($renderer->get_format_responsive()) && ($cnsettings['columnorientation'] == 2)) {
         echo '.course-content ul.cntopics li.section {';
         // Note: Need '!important' for Bootstrap V3 based themes as '.hidden' class now uses it when V2.3.2 did not.
         echo 'display: inline-block !important;';

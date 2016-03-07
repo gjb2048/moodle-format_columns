@@ -88,3 +88,9 @@ $string['defaultcolumnorientation'] = 'Default column orientation';
 $string['defaultcolumnorientation_desc'] = "The default column orientation: Vertical or Horizontal.";
 // Capabilities.
 $string['columns:changecolumns'] = 'Change or reset the columns';
+
+// Format responsive.
+$string['off'] = 'Off';
+$string['on'] = 'On';
+$string['formatresponsive'] = 'Format responsive';
+$string['formatresponsive_desc'] = "Turn on if you are using a non-responsive theme and the format will adjust to the screen size / device.  Turn off if you are using a responsive theme.  Bootstrap 2.3.2 support is built in, for other frameworks and versions, override the methods 'get_row_class()' and 'get_column_class()' in renderer.php.";

@@ -5,6 +5,7 @@ Version 3.0.1
   2. Added TravisCI support.
   3. Implement MDL-26226.
   4. Course format API changes for M3.0.
+  5. Added 'Format responsive' setting from 'Collapsed Topics'.
 
 Version 2.9.1.1
   1. Update readme.
