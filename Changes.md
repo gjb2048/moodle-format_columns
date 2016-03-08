@@ -6,6 +6,8 @@ Version 3.0.1
   3. Implement MDL-26226.
   4. Course format API changes for M3.0.
   5. Added 'Format responsive' setting from 'Collapsed Topics'.
+  6. Improve styles for both horizontal and vertical orientations.
+  7. Renamed plugin from 'Columns format' to just 'Columns'.
 
 Version 2.9.1.1
   1. Update readme.

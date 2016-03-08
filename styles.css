@@ -26,8 +26,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-.course-content ul.cntopics {
-    margin:0;
+ ul.cntopics {
+    margin: 0;
+}
+
+.course-content ul.cntopics.section-zero {
+    margin: 0;
 }
 
 .course-content ul.cnlayout {
@@ -38,8 +42,9 @@
 .course-content ul.cntopics li.section.main, .course-content ul.cntopics li.cnsection {
     list-style: none;
 }
-.course-content ul.cntopics li.section.main, .course-content ul.cntopics li.cnsection, ul.cntopics {
-    padding: 1px;
+
+.course-content ul.cntopics li.section {
+    padding: 0 0 20px 0;
 }
 
 .course-content ul.cntopics li.section.main .content, .course-content ul.cntopics li.cnsection .content {
@@ -115,10 +120,6 @@ body.format-columns.dir-rtl .cntopics .section .activity .mod-indent-outer {
 
 body.format-columns.editing.dir-rtl .cntopics .section .activity .mod-indent-outer {
     padding-right: 32px;
-}
-
-body.format-columns .cntopics .section  {
-    margin: 1em 0;
 }
 
 body.format-columns .course-content ul.cntopics li.section .summary {

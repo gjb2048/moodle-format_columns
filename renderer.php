@@ -70,7 +70,7 @@ class format_columns_renderer extends format_section_renderer_base {
      */
 
     protected function start_section_list() {
-        return html_writer::start_tag('ul', array('class' => 'cntopics'));
+        return html_writer::start_tag('ul', array('class' => 'cntopics section-zero'));
     }
 
     /**
@@ -78,12 +78,12 @@ class format_columns_renderer extends format_section_renderer_base {
      * @return string HTML to output.
      */
     protected function start_columns_section_list() {
-        $classes = 'cntopics topics';
+        $classes = 'cntopics';
         $attributes = array();
         if ($this->formatresponsive) {
             $style = '';
             if ($this->cnsettings['columnorientation'] == 1) { // Vertical columns.
-                $style .= 'width:' . $this->cncolumnwidth . '%;';
+                $style .= 'width: ' . $this->cncolumnwidth . '%;';
             } else {
                 $style .= 'width: 100%;';  // Horizontal columns.
             }
@@ -253,7 +253,7 @@ class format_columns_renderer extends format_section_renderer_base {
         $title = get_section_name($course, $section);
         $liattributes = array('id' => 'section-'.$section->section, 'class' => $classattr, 'role' => 'region', 'aria-label' => $title);
         if (($this->formatresponsive) && ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
-            $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
+            $liattributes['style'] = 'width: ' . $this->cncolumnwidth . '%;';
         }
         $o .= html_writer::start_tag('li', $liattributes);
 
@@ -319,7 +319,7 @@ class format_columns_renderer extends format_section_renderer_base {
             'aria-label' => $this->courseformat->get_section_name($section)
         );
         if (($this->formatresponsive) && ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
-            $liattributes['style'] = 'width:' . $this->cncolumnwidth . '%;';
+            $liattributes['style'] = 'width: ' . $this->cncolumnwidth . '%;';
         }
         $o .= html_writer::start_tag('li', $liattributes);
 
@@ -545,11 +545,6 @@ class format_columns_renderer extends format_section_renderer_base {
 
             if ($this->formatresponsive) {
                 $this->cncolumnwidth = 100 / $this->cnsettings['columns'];
-                if ($this->cnsettings['columnorientation'] == 2) { // Horizontal column layout.
-                    $this->cncolumnwidth -= 1;
-                } else {
-                    $this->cncolumnwidth -= 0.2;
-                }
                 $this->cncolumnpadding = 0; // In px.
             }
         } else if ($this->cnsettings['columns'] < 1) {
@@ -599,20 +594,27 @@ class format_columns_renderer extends format_section_renderer_base {
             }
 
             // Only break in non-mobile themes or using a reponsive theme.
-            if ((!$this->formatresponsive) || ($this->mobiletheme === false)) {
-                if ($this->cnsettings['columnorientation'] == 1) {  // Only break columns in vertical mode.
-                    if (($canbreak == false) && ($showsection == true)) {
-                        $canbreak = true;
+            if ($this->mobiletheme === false) {
+                if (($canbreak == false) && ($showsection == true)) {
+                    $canbreak = true;
+                    if ($this->cnsettings['columnorientation'] == 1) { // Vertical mode.
                         $columnbreakpoint = ($shownsectioncount + ($numsections / $this->cnsettings['columns'])) - 1;
+                    } else {
+                        $columnbreakpoint = ($shownsectioncount + $this->cnsettings['columns']) - 1;
                     }
+                }
 
-                    if (($canbreak == true) &&
-                       ($shownsectioncount >= $columnbreakpoint) && ($columncount < $this->cnsettings['columns'])) {
-                        echo $this->end_section_list();
-                        echo $this->start_columns_section_list();
-                        $columncount++;
-                        // Next breakpoint is...
+                if (($canbreak == true) &&
+                    ($shownsectioncount >= $columnbreakpoint) &&
+                    (($columncount < $this->cnsettings['columns']) || ($this->cnsettings['columnorientation'] == 2))) {
+                    echo $this->end_section_list();
+                    echo $this->start_columns_section_list();
+                    $columncount++;
+                    // Next breakpoint is...
+                    if ($this->cnsettings['columnorientation'] == 1) { // Vertical mode.
                         $columnbreakpoint += $numsections / $this->cnsettings['columns'];
+                    } else {
+                        $columnbreakpoint += $this->cnsettings['columns'];
                     }
                 }
             }
