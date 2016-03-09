@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Architects+Daughter' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <title>Moodle-format columns by gjb2048</title>
+  </head>
+
+  <body>
+    <header>
+      <div class="inner">
+        <h1>Moodle-format columns</h1>
+        <h2></h2>
+        <a href="https://github.com/gjb2048/moodle-format_columns" class="button"><small>View project on</small> GitHub</a>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="inner clearfix">
+        <section id="main-content">
+          <h1>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>Topic based course format with the ability to arrange the topics in columns except 0.</p>
+
+<p>If you find an issue with the format, please see the 'Reporting Issues' section below.</p>
+
+<p><a href="https://travis-ci.org/gjb2048/moodle-format_columns"><img src="https://travis-ci.org/gjb2048/moodle-format_columns.svg?branch=master" alt="Build Status"></a></p>
+
+<h1>
+<a id="required-version-of-moodle" class="anchor" href="#required-version-of-moodle" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Required version of Moodle</h1>
+
+<p>This version works with Moodle version 2015111600.00 3.0 (Build: 20151116) and above within the 3.0 branch until the
+next release.</p>
+
+<p>Please ensure that your hardware and software complies with 'Requirements' in 'Installing Moodle' on
+'docs.moodle.org/30/en/Installing_Moodle'.</p>
+
+<h1>
+<a id="supporting-columns-development" class="anchor" href="#supporting-columns-development" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supporting Columns development</h1>
+
+<p>If you find Columns useful and beneficial, please consider sponsoring by:</p>
+
+<p>PayPal - Please contact me via my 'Moodle profile' (above) for details as I am an individual and therefore am unable
+to have 'buy me now' buttons under their terms.</p>
+
+<p>Flattr - <a href="https://flattr.com/profile/gjb2048">https://flattr.com/profile/gjb2048</a></p>
+
+<p>I develop and maintain for free and any sponsorships to assist me in this endeavour are appreciated.</p>
+
+<h1>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h1>
+
+<ol>
+<li>Ensure you have the version of Moodle as stated above in 'Required version of Moodle'.  This is essential as the
+format relies on underlying core code that is out of my control.</li>
+<li>If upgrading from Moodle 2.3 or a previous release, please see 'Upgrade Instructions' below.</li>
+<li>Put Moodle in 'Maintenance Mode' (docs.moodle.org/en/admin/setting/maintenancemode) so that there are no 
+users using it bar you as the administrator - if you have not already done so.</li>
+<li>Copy 'columns' to '/course/format/' if you have not already done so.</li>
+<li>In 'cnconfig.php' change the value of defaultcolumns' for setting the default layout, structure and columns respectively for
+new / updating courses as desired by following the instructions contained within.</li>
+<li>Login as an administrator and follow standard the 'plugin' update notification.  If needed, go to
+'Site administration' -&gt; 'Notifications' if this does not happen.</li>
+<li>Put Moodle out of Maintenance Mode.</li>
+</ol>
+
+<h1>
+<a id="upgrade-instructions" class="anchor" href="#upgrade-instructions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Upgrade Instructions</h1>
+
+<ol>
+<li>Ensure you have the version of Moodle as stated above in 'Required version of Moodle'.  This is essential as the
+format relies on underlying core code that is out of my control.</li>
+<li>Put Moodle in 'Maintenance Mode' so that there are no users using it bar you as the administrator.</li>
+<li>In '/course/format/' move old 'columns' directory to a backup folder outside of Moodle.</li>
+<li>Follow installation instructions above.</li>
+<li>Perform a 'Purge all caches' under 'Home -&gt; Site administration -&gt; Development -&gt; Purge all caches'.</li>
+<li>Put Moodle out of Maintenance Mode.</li>
+</ol>
+
+<h1>
+<a id="uninstallation" class="anchor" href="#uninstallation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Uninstallation</h1>
+
+<ol>
+<li>Put Moodle in 'Maintenance Mode' so that there are no users using it bar you as the administrator.</li>
+<li>It is recommended but not essential to change all of the courses that use the format to another.  If this is
+not done Moodle will pick the last format in your list of formats to use but display in 'Edit settings' of the
+course the first format in the list.  You can then set the desired format.</li>
+<li>In '/course/format/' remove the folder 'columns'.</li>
+<li>In the database, remove the entry for 'format_columns' ('plugin' attribute) in the table 'config_plugins'.<br>
+If using the default prefix this will be 'mdl_config_plugins'.</li>
+<li>Put Moodle out of Maintenance Mode.</li>
+</ol>
+
+<h1>
+<a id="course-backup-and-restore-instructions" class="anchor" href="#course-backup-and-restore-instructions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Course Backup and Restore Instructions</h1>
+
+<ol>
+<li>Backup as you would any other course.  The number of columns will be stored with the course settings.</li>
+<li>Restore as you would any other course.  If you are offered the option of 'Overwrite Course Configuration'
+you must say 'Yes' to have the number of columns restored otherwise the restored course will retain the
+number of columns it previously had or the default in the 'cnconfig.php' file as mentioned in the 'Installation'
+instructions above depending on the situation.</li>
+<li>Note: I believe that if you restore a Columns's course on an installation that does not have the
+     format then it will work and become the default course format.  However the column data will not be
+     stored if you install Columns's at a later date.</li>
+</ol>
+
+<h1>
+<a id="reporting-issues" class="anchor" href="#reporting-issues" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Reporting Issues</h1>
+
+<p>Before reporting an issue, please ensure that you are running the latest version for your release of Moodle.  The primary
+release area is located on <a href="https://moodle.org/plugins/view.php?plugin=format_columns">https://moodle.org/plugins/view.php?plugin=format_columns</a>.  It is also essential that you are
+operating the required version of Moodle as stated at the top - this is because the format relies on core functionality that
+is out of its control.</p>
+
+<p>All 'Columns' does is integrate with the course page and control it's layout, therefore what may appear to be an issue
+with the format is in fact to do with a theme or core component.  Please be confident that it is an issue with 'Columns'
+but if in doubt, ask.</p>
+
+<p>I operate a policy that I will fix all genuine issues for free.  Improvements are at my discretion.  I am happy to make bespoke
+customisations / improvements for a negotiated fee. </p>
+
+<p>When reporting an issue you can post in the course format's forum on Moodle.org (currently 'moodle.org/mod/forum/view.php?id=47')
+or contact me direct (details at the bottom).</p>
+
+<p>It is essential that you provide as much information as possible, the critical information being the contents of the format's 
+version.php file.  Other version information such as specific Moodle version, theme name and version also helps.  A screen shot
+can be really useful in visualising the issue along with any files you consider to be relevant.</p>
+
+<h1>
+<a id="version-information" class="anchor" href="#version-information" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Version Information</h1>
+
+<p>See Changes.md</p>
+
+<h1>
+<a id="references" class="anchor" href="#references" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>References</h1>
+
+<p>Collapsed Topics Format - Column code migrated from - <a href="https://moodle.org/plugins/view.php?plugin=format_topcoll">https://moodle.org/plugins/view.php?plugin=format_topcoll</a></p>
+
+<p>G J Barnard MSc. BSc(Hons)(Sndw). MBCS. CEng. CITP. PGCE.
+Moodle profile: moodle.org/user/profile.php?id=442195.
+Web profile   : about.me/gjbarnard</p>
+        </section>
+
+        <aside id="sidebar">
+          <a href="https://github.com/gjb2048/moodle-format_columns/zipball/master" class="button">
+            <small>Download</small>
+            .zip file
+          </a>
+          <a href="https://github.com/gjb2048/moodle-format_columns/tarball/master" class="button">
+            <small>Download</small>
+            .tar.gz file
+          </a>
+
+          <p class="repo-owner"><a href="https://github.com/gjb2048/moodle-format_columns"></a> is maintained by <a href="https://github.com/gjb2048">gjb2048</a>.</p>
+
+          <p>This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the Architect theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.</p>
+        </aside>
+      </div>
+    </div>
+
+  
+  </body>
+</html>
