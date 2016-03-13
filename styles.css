@@ -72,6 +72,10 @@
     padding: 0;
 }
 
+.editing .course-content ul.cntopics li.section.main .side, .editing .course-content ul.cntopics li.cnsection .side {
+    width: 50px;
+}
+
 .course-content ul.cntopics li.section .left, .course-content ul.cntopics li.cnsection .left {
     float:left;
 }
