@@ -1,5 +1,8 @@
 Version Information
 ===================
+Version 3.0.1.2
+  1. Fix horizontal columns in one section per page mode.
+
 Version 3.0.1.1
   1. Remove 'section_right_content' method.  Prevents warning when editing.
   2. Set side widths when editing.

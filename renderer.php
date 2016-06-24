@@ -227,11 +227,16 @@ class format_columns_renderer extends format_section_renderer_base {
             $classattr .= ' current';
         }
 
+        if ((!$this->formatresponsive) && ($section->section != 0) &&
+            ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
+            $classattr .= ' '.$this->get_column_class($this->cnsettings['columns']);
+        }
+
         $o = '';
         $title = get_section_name($course, $section);
         $liattributes = array('id' => 'section-'.$section->section, 'class' => $classattr, 'role' => 'region', 'aria-label' => $title);
         if (($this->formatresponsive) && ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
-            $liattributes['style'] = 'width: ' . $this->cncolumnwidth . '%;';
+            $liattributes['style'] = 'width: '.$this->cncolumnwidth.'%;';
         }
         $o .= html_writer::start_tag('li', $liattributes);
 
@@ -288,16 +293,16 @@ class format_columns_renderer extends format_section_renderer_base {
 
         if ((!$this->formatresponsive) && ($section->section != 0) &&
             ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
-            $sectionstyle .= ' ' . $this->get_column_class($this->cnsettings['columns']);
+            $sectionstyle .= ' '.$this->get_column_class($this->cnsettings['columns']);
         }
         $liattributes = array(
             'id' => 'section-' . $section->section,
-            'class' => 'section main clearfix' . $sectionstyle,
+            'class' => 'section main clearfix'.$sectionstyle,
             'role' => 'region',
             'aria-label' => $this->courseformat->get_section_name($section)
         );
         if (($this->formatresponsive) && ($this->cnsettings['columnorientation'] == 2)) { // Horizontal column layout.
-            $liattributes['style'] = 'width: ' . $this->cncolumnwidth . '%;';
+            $liattributes['style'] = 'width: '.$this->cncolumnwidth.'%;';
         }
         $o .= html_writer::start_tag('li', $liattributes);
 
